@@ -1,67 +1,28 @@
-from django.shortcuts import render, render_to_response
-from django.template import RequestContext, loader
-from django.contrib.sessions.models import Session
+from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
 from django.conf import settings
-from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from django.contrib.auth import logout,login
-from django.contrib.auth.forms import AuthenticationForm
-from django.utils import timezone
+from django.http import JsonResponse, HttpResponseRedirect
 import json
 
-def login_view(request):
-    redirect_to = settings.LOGIN_REDIRECT_URL
-    if request.method == "POST":
-        redirect_to = request.POST.get('next')
-        form = AuthenticationForm(request, data=request.POST)
-
-        if form.is_valid():
-            login(request, form.get_user())
-            return HttpResponseRedirect(redirect_to)
+def index(request):
+    if not bool(User.objects.all().count()):
+        return HttpResponseRedirect('/superuser/') 
     else:
-        if not bool(User.objects.all().count()):
-            return HttpResponseRedirect('/superuser/')
-            #User.objects.create_superuser('admin','admin@123.com','1234.com')
-        form = AuthenticationForm(request)
-
-    context = {
-        'form': form,
-        'next': redirect_to
-    }
-
-    return render_to_response('login.html',context)
+        return HttpResponseRedirect('/login/')
 
 def create_superuser(request):
-    redirect_to = settings.LOGIN_REDIRECT_URL
-
     if bool(User.objects.all().count()):
-        return HttpResponseRedirect(redirect_to)
-
-    if request.method == "POST":
-        try:
-            #post = request.POST
-            post = json.loads(request.body) 
-            User.objects.create_superuser(post['username'],'admin@example.com',post['password'])
-            context = {'flag':"Success",}
-        except Exception as e:
-            context = { "flag":"Error","context":str(e) }
-        return JsonResponse(context)
-
-    return render_to_response('superuser.html')
-
-def logout_view(request):
-    Session.objects.filter(expire_date__lte=timezone.now()).delete()
-    logout(request)
-    return HttpResponseRedirect('/login/')
-
-def is_auth(view):
-    def decorator(request, *args, **kwargs):
-        if not request.user.is_authenticated():
-            context = {
-                'flag':"Error",
-                'context':"AuthFailed"
-            }
+        #context = { "flag": "Error", "context": "superuser Already exist" }
+        #return JsonResponse(context)
+        return HttpResponseRedirect('/home')
+    else:
+        if request.method == "POST":
+            try:
+                #post = request.POST
+                post = json.loads(request.body) 
+                User.objects.create_superuser(username=post['username'], email=None, password=post['password'])
+                context = {'flag': "Success",}
+            except Exception as e:
+                context = { "flag":"Error", "context":str(e) }
             return JsonResponse(context)
-        else:
-            return view(request, *args, **kwargs)
-    return decorator
+        return render_to_response('superuser.html')

@@ -14,15 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url, include
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-from django.views.generic.base import RedirectView
-from django.conf import settings
-from .views import logout_view,login_view,create_superuser
+from django.contrib import admin
+from django.contrib.auth.views import login, logout_then_login
+from . import views
 
 urlpatterns = [
-    url(r'^login/$', login_view),
-    url(r'^logout/$', logout_view),
-    url(r'^superuser/$', create_superuser),
-    url(r'^settings/', include('settings.urls')),
+    url(r'^$', views.index),
+    url(r'^login/$', login ,{'template_name': 'login.html'}),
+    url(r'^logout/$', logout_then_login ,{'login_url': '/'}),
+    url(r'^superuser/$', views.create_superuser),
+    url(r'^setting/', include('setting.urls')),
 ]
-urlpatterns += staticfiles_urlpatterns()

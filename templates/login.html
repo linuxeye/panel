@@ -10,9 +10,9 @@
     <!-- Bootstrap 3.3.6 -->
     <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css" %}">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="{% static "dist/css/font-awesome.min.css" %}">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Ionicons -->
-    <link rel="stylesheet" href="{% static "dist/css/ionicons.min.css" %}">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="{% static "dist/css/AdminLTE.min.css" %}">
     <!-- iCheck -->
@@ -29,7 +29,7 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="/dashboard/"><b></b>控制面板</a>
+            <a href="/"><b></b>控制面板</a>
         </div>
         <!-- /.login-logo -->
         <div class="login-box-body">
@@ -61,7 +61,7 @@
                     </div>
                     <div class="col-xs-4">
                         <button type="submit" value="login" class="btn btn-primary btn-block btn-flat">登录</button>
-                        <input type="hidden" name="next" value="{{ next }}" />
+                        <input type="hidden" name="next" value="/home" />
                     </div>
                 </div>
             </form>
