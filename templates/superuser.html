@@ -84,12 +84,13 @@
     function create_superuser() {
         var username = $('#username').val()
         var password = $('#password').val()
-        var vpassword = $('#verify_password').val()
-        if (username && (password == vpassword)) {
+        var verify_password = $('#verify_password').val()
+        if (username && (password == verify_password)) {
             if (confirm("确认使用[" + username + "]做为您的管理员用户吗？")) {
                 jQuery.ajax({
                     type: 'post',
                     url: '/superuser/',
+                    headers: {'X-CSRFToken': '{{ csrf_token }}'},
                     data: JSON.stringify($('#form_create_superuser').serializeObject()),
                     dataType: 'json',
                     success: function(p) {
@@ -107,7 +108,7 @@
                 })
             }
         } else {
-            alert('输入错误,请检查参数！')
+            alert('输入密码不一致！')
         }
     }
     </script>

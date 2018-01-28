@@ -34,6 +34,7 @@
                 </form>
             </div>
             <div class="box-footer">
+                    {% csrf_token %}
                 <button type="button" class="btn btn-primary" onclick="modify_pass()">修改密码</button>
             </div>
         </div>
@@ -47,12 +48,12 @@
                 <h4 class="box-title">管理员用户<small> 修改管理员用户名</small></h4>
             </div>
             <div class="box-body">
-                <form class="form-horizontal" id="form_reset_superuser">
+                <form class="form-horizontal" id="form_reset_username">
                     <div class="form-group">
                         <label class="col-sm-1 control-label">用户名</label>
                         <div class="col-sm-4">
-                            <div id="div_new_superuser">
-                                <input type="text" class="form-control" name="new_superuser" id="input_new_superuser" placeholder="请输入新用户" onblur="check_superuser()">
+                            <div id="div_new_username">
+                                <input type="text" class="form-control" name="new_username" id="input_new_username" placeholder="请输入新用户" onblur="check_username()">
                             </div>
                         </div>
                     </div>
@@ -67,7 +68,7 @@
                 </form>
             </div>
             <div class="box-footer">
-                <button type="button" class="btn btn-primary" onclick="modify_superuser()">重置管理员</button>
+                <button type="button" class="btn btn-primary" onclick="modify_username()">重置管理员</button>
             </div>
         </div>
     </div>
@@ -119,15 +120,15 @@ function check_input_pass() {
     return _return
 }
 
-function check_superuser() {
-    var _new_superuser = $('#input_new_superuser')[0]
+function check_username() {
+    var _new_username = $('#input_new_username')[0]
     _return = false
-    $(_new_superuser.closest("div")).removeClass()
-    if ( _new_superuser.value.length > 1) {
-        $(_new_superuser.closest("div")).toggleClass('has-success')
+    $(_new_username.closest("div")).removeClass()
+    if ( _new_username.value.length > 1) {
+        $(_new_username.closest("div")).toggleClass('has-success')
         _return = true
     } else {
-        $(_new_superuser.closest("div")).toggleClass('has-error')
+        $(_new_username.closest("div")).toggleClass('has-error')
     }
     return _return
 }
@@ -138,13 +139,14 @@ function modify_pass() {
             jQuery.ajax({
                 type: 'post',
                 url: '/setting/password/',
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
                 data: $('#form_modify_pass').serialize(),
                 success: function(p) {
                     if (p.flag == "Success") {
                         alert("修改成功！请重新登录！")
                         top.location = '/logout/'
                     } else if (p.flag == "Error" && p.context == "VerifyFaild") {
-                        alert('修改失败！密码验证失败！')
+                        alert('修改失败！原密码验证失败！')
                     } else if (p.flag == "Error" && p.context == "AuthFailed") {
                         alert('认证失败！请重新登录！')
                         top.location = '/login/'
@@ -158,17 +160,18 @@ function modify_pass() {
             })
         }
     } else {
-        alert('密码输入有误！')
+        alert('新密码至少6位！')
     }
 }
 
-function modify_superuser() {
-    if (check_superuser()) {
+function modify_username() {
+    if (check_username()) {
         if (confirm("确认要重置管理员用户名？")) {
             jQuery.ajax({
                 type: 'post',
-                url: '/setting/admin/',
-                data: $('#form_reset_superuser').serialize(),
+                headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                url: '/setting/username',
+                data: $('#form_reset_username').serialize(),
                 success: function(p) {
                     if (p.flag == "Success") {
                         alert("修改成功！")
@@ -185,6 +188,5 @@ function modify_superuser() {
         }
     }
 }
-
 </script>
 {% endblock %}

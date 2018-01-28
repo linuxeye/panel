@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render
 from django.template import RequestContext, loader
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -8,23 +8,18 @@ from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 import json,time
 
-@login_required(login_url="/login/")
+@login_required
 def index(request):
     user = {
         'name': request.user,
         'date': time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
     }
 
-    nic = {
-        'nics': 'test',
-        'internal_nic': 'setting coming soon'
-    }
-
     #return JsonResponse(context)
-    return render_to_response('setting.html',{ 'user' : user , 'nic' : nic })
+    return render(request, 'setting.html', { 'user' : user })
 
-@login_required(login_url="/login/")
-def modify_pass(request):
+@login_required
+def modify_password(request):
     try:
         post = request.POST
         old_pass = post['old_password']
@@ -35,30 +30,26 @@ def modify_pass(request):
             if user.check_password(old_pass) and new_pass == verify_pass:
                 user.set_password(verify_pass)
                 user.save()
-                content = { "flag":"Success" }
+                content = { 'flag': 'Success' }
             else:
-                content = { "flag":"Error","context":"VerifyFaild" }
+                content = { 'flag': 'Error', 'context': 'VerifyFaild' }
     except Exception as e:
         content = { "flag":"Error","context":str(e) }
-
     return JsonResponse(content)
 
-@login_required(login_url="/login/")
-def admin_reset(request):
+@login_required
+def modify_username(request):
     try:
         post = request.POST
-        admin_pass = post['password']
-        new_admin=post['new_superuser']
+        username_password = post['password']
+        new_username=post['new_username']
         user = User.objects.get(username=request.user)
-        print(admin_pass,new_admin,user)
-        if user.check_password(admin_pass):
-            user.username=new_admin
+        if user.check_password(username_password):
+            user.username=new_username
             user.save()
-            content = { "flag":"Success" }
+            content = { 'flag': 'Success' }
         else:
-            content = { "flag":"Error","context":"VerifyFaild" }
+            content = { 'flag': 'Error', 'context': 'VerifyFaild' }
     except Exception as e:
-        content = { "flag":"Error","context":str(e) }
-
+        content = { 'flag': 'Error', 'context': str(e) }
     return JsonResponse(content)
-    #return HttpResponse(json.dumps(content))

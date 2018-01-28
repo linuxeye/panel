@@ -15,13 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from django.contrib.auth.views import login, logout_then_login
+from django.contrib.auth.views import login, logout
 from . import views
 
 urlpatterns = [
     url(r'^$', views.index),
-    url(r'^login/$', login ,{'template_name': 'login.html'}),
-    url(r'^logout/$', logout_then_login ,{'login_url': '/'}),
+    url(r'^login/$', login, {'template_name': 'login.html'}),
+    url(r'^logout/$', logout, {'next_page': "/"}),
     url(r'^superuser/$', views.create_superuser),
     url(r'^setting/', include('setting.urls')),
 ]
