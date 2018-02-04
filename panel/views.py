@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.http import JsonResponse, HttpResponseRedirect
-import json
+import os,json
 
 def index(request):
     if not bool(User.objects.all().count()):

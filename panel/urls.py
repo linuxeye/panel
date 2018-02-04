@@ -24,4 +24,5 @@ urlpatterns = [
     url(r'^logout/$', logout, {'next_page': "/"}),
     url(r'^superuser/$', views.create_superuser),
     url(r'^setting/', include('setting.urls')),
+    url(r'^ftp/', include('ftp.urls')),
 ]

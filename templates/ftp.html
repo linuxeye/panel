@@ -1,0 +1,481 @@
+{% extends "base.html" %} {% block content %}
+<!-- Modal -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <button type="button" class="btn btn-primary pull-left" onclick="edit_balancer(1)">创建负载均衡器</button>
+                <div class="input-group pull-right" style="width: 250px;">
+                    <input type="text" name="ftp_filter" id="input_ftp_filter" class="form-control pull-right" placeholder="请输入名称或域名" onkeydown='if(event.keyCode==13){ftp_filter()}'>
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default" onclick="ftp_filter()"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>名称</th>
+                            <th>协议</th>
+                            <th>端口</th>
+                            <th>状态</th>
+                            <th>检测方式</th>
+                            <th>更新时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for server in ftp %}
+                        <tr>
+                            <td class="col-sm-3">
+                                <button type="button" class="btn btn-default btn-xs col-sm-10" onclick="edit_balancer(0,'{{ server.config_id }}')">{{ server.ftp_name }}</button>
+                            </td>
+                            {% if server.protocols %}
+                            <td>
+                                <button class="btn btn-warning btn-xs" disabled>HTTPS</button>
+                            </td>
+                            {% else %}
+                            <td>
+                                <button class="btn btn-primary btn-xs" disabled>HTTP</button>
+                            </td>
+                            {% endif %}
+                            <td>{{ server.listen }}</td>
+                            {% if server.status %}
+                            <td>
+                                <button type="button" class="btn btn-success btn-xs" onclick="change_status('{{ server.pk }}',0)">启用</button>
+                            </td>
+                            {% else %}
+                            <td>
+                                <button type="button" class="btn btn-danger btn-xs" onclick="change_status('{{ server.pk }}',1)">禁用</button>
+                            </td>
+                            {% endif %} {% if server.check_type == "tcp" %}
+                            <td>
+                                <button type="button" class="btn btn-warning btn-xs" disabled>TCP</button>
+                            </td>
+                            {% else %}
+                            <td>
+                                <button type="button" class="btn btn-primary btn-xs" onclick="ftp_status('{{ server.pk }}',0)">HTTP</button>
+                            </td>
+                            {% endif %}
+                            <td>{{ server.update_time | timestamp_to_date }}</td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-xs" onclick="get_ftp_logs('{{ server.pk }}')">日志</button>
+                                <button type="button" class="btn btn-danger btn-xs" onclick="delete_ftp('{{ server.pk }}','{{ server.ftp_name }}')">删除</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer clearfix">
+                <ul class="pagination pagination-sm no-margin pull-right">
+                    {% if ftp.has_previous %}
+                    <li><a href="?page={{ ftp.previous_page_number }}&filter={{ filter }}" class="prev">{{ previous_link_decorator|safe }}上一页</a></li>
+                    {% else %}
+                    <li class="paginate_button previous disabled"><span class="disabled prev">{{ previous_link_decorator|safe }}上一页</span></li>
+                    {% endif %} {% if ftp.has_next %}
+                    <li><a href="?page={{ ftp.next_page_number }}&filter={{ filter }}" class="next">下一页{{ next_link_decorator|safe }}</a></li>
+                    {% else %}
+                    <li class="paginate_button next disabled"><span class="disabled next">下一页{{ next_link_decorator|safe }}</span></li>
+                    {% endif %}
+                    <li class="paginate_button previous disabled">
+                        <span>第 {{ ftp.number }} 页 - 共 {{ ftp.paginator.num_pages }} 页</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$('#menu_ftp_config').addClass('active')
+$('#page_header').text('负载均衡配置')
+$('#page_header_descript').text('用于管理 Nginx 虚拟主机相关配置')
+$('#page_nav').text('服务管理')
+$('#page_name').text('负载均衡配置')
+
+function check_form(input) {
+    if ($(input).attr('name') == 'ftp_http_check') {
+        if ($(input).prop('checked') == true) {
+            alert('您选择了使用 HTTP 方式检测后端节点，这种方式将视所有状态码为非 2XX 以及 3XX 的节点为不可用，有可能造成访问异常以及效率下降，若有以上问题请修改配置！')
+        }
+        return
+    }
+    var input_div = $(input.closest("div"))
+    input_div.removeClass('has-error')
+    input_div.removeClass('has-success')
+    if (($(input).val() == "") || ($(input).attr('name') == "ftp_listen" && !$(input).val().indexOf("8000"))) {
+        input_div.addClass('has-error')
+    } else {
+        input_div.addClass('has-success')
+    }
+}
+
+function check_balancer_ssl(self) {
+    if ($(self)[0].checked == true) {
+        $('#txt_ssl_cert_body').removeAttr('disabled')
+        $('#txt_ssl_key_body').removeAttr('disabled')
+        $('#check_ssl_port').removeAttr('disabled')
+        $('#div_ssl_cert_body').removeClass('has-success')
+        $('#div_ssl_key_body').removeClass('has-success')
+    } else {
+        $('#txt_ssl_cert_body').text('')
+        $('#txt_ssl_key_body').text('')
+        $('#check_ssl_port').prop('checked', false)
+        $('#check_ssl_port').attr('disabled', 'disabled')
+        $('#txt_ssl_cert_body').attr('disabled', 'disabled')
+        $('#txt_ssl_key_body').attr('disabled', 'disabled')
+    }
+}
+
+function edit_upstream(add, upstream) {
+    if (add == 1) {
+        if (upstream == null) {
+            upstream = {
+                address: null,
+                port: null,
+                weight: null,
+                max_fails: null,
+                fail_timeout: null
+            }
+        }
+
+        tb = '<form class="form-horizontal"><table class="table table-bordered" style="margin-bottom:0px"><tr>'
+        tb += '<td class="col-sm-3"><div><input type="text" onblur="check_form(this)" class="form-control" name="upstream_address" placeholder="IP地址" data-inputmask="\'alias\': \'ip\'" data-mask value="' + upstream.address + '"></div></td>'
+        tb += '<td class="col-sm-2"><div><input type="text" onblur="check_form(this)" class="form-control" name="upstream_port" placeholder="服务端口" data-inputmask="\'mask\':\'[9]{1,5}\'" data-mask value="' + upstream.port + '"></div></td>'
+        tb += '<td class="col-sm-2"><input type="text" class="form-control" name="upstream_weight" placeholder="*权重(1-100)" data-inputmask="\'mask\':\'[9]{1,3}\'" data-mask value="' + upstream.weight + '"></td>'
+        tb += '<td  class="col-sm-2"><input type="text" class="form-control" name="upstream_max_fails" placeholder="*重试次数(1-99)"data-inputmask="\'mask\':\'[9]{1,2}\'" data-mask value="' + upstream.max_fails + '"></td>'
+        tb += '<td class="col-sm-2"><input type="text" class="form-control" name="upstream_fail_timeout" placeholder="*超时时间(秒)" data-inputmask="\'mask\':\'[9]{1,2}\'" data-mask value="' + upstream.fail_timeout + '"></td>'
+        tb += '<td><a href="#" onclick="edit_upstream(0,this)"><h5><i class="fa fa-remove"></i></h5></a></td>'
+        tb += '</tr></table></form>'
+        $('#div_upstream_list').append(tb)
+        $("[data-mask]").inputmask()
+    } else {
+        $(upstream).parents('form')[0].remove()
+    }
+}
+
+
+function edit_balancer(create, config_id) {
+    $('#a_default_conf').trigger('click')
+    if (create == 1) {
+        $('#edit_balancer_title').text('创建负载均衡器')
+        $('#edit_balancer_mtitle').text('')
+        $('#input_ftp_config_id').val('0')
+        $('#input_ftp_ftp_name').val('')
+        $('#input_ftp_listen').val('')
+        $('#input_ftp_server_name').val('')
+        $('#input_ftp_access_log').val('')
+        $('#input_ftp_error_log').val('')
+        $('#check_ftp_ip_hash').attr('checked', false)
+        $('#check_ftp_http_check').attr('checked', false)
+        $('#div_upstream_list').empty()
+        $("[data-mask]").inputmask()
+        $('#edit_balancer').modal('show')
+    } else {
+        var post = {
+            config_id: config_id
+        }
+        jQuery.ajax({
+            type: 'post',
+            url: '/ftp/query/',
+            data: JSON.stringify(post),
+            dataType: "json",
+            success: function(p) {
+                if (p.flag == "Success") {
+                    $('#edit_balancer_title').text('编辑负载均衡器')
+                    $('#edit_balancer_mtitle').text(config_id)
+                    $('#input_ftp_config_id').val(config_id)
+                    $('#div_upstream_list').empty()
+
+                    $('#input_ftp_ftp_name').val(p.context.ftp.ftp_name)
+                    $('#input_ftp_listen').val(p.context.ftp.listen)
+                    $('#input_ftp_server_name').val(p.context.ftp.server_name)
+                    $('#input_ftp_access_log').val(p.context.ftp.access_log)
+                    $('#input_ftp_error_log').val(p.context.ftp.error_log)
+                    $('#input_ftp_description').text(p.context.ftp.description)
+                    if (p.context.ftp.balancer_type == "ip_hash") {
+                        $('#check_ftp_ip_hash').prop('checked', true)
+                    } else {
+                        $('#check_ftp_ip_hash').prop('checked', false)
+                    }
+                    if (p.context.ftp.check_type == "http") {
+                        $('#check_ftp_http_check').prop('checked', true)
+                    } else {
+                        $('#check_ftp_http_check').prop('checked', false)
+                    }
+                    for (var f in p.context.upstream) {
+                        edit_upstream(1, p.context.upstream[f])
+                    }
+                    if (p.context.ftp.protocols == true) {
+                        $('#check_ssl_status').prop('checked', true)
+                        $('#txt_ssl_cert_body').text(p.context.ftp.ssl_cert)
+                        $('#txt_ssl_key_body').text(p.context.ftp.ssl_key)
+                    } else {
+                        $('#check_ssl_status').prop('checked', false)
+                    }
+                    if (p.context.ftp.listen == 443) {
+                        $('#check_ssl_port').prop('checked', false)
+                    } else {
+                        $('#check_ssl_port').prop('checked', true)
+                    }
+                    check_balancer_ssl($('#check_ssl_status'))
+                    $('#edit_balancer').modal('show')
+                } else if (p.flag == "Error" && p.context == "AuthFailed") {
+                    alert('认证失败！请重新登录！')
+                    top.location = '/login/'
+                } else {
+                    alert('查询失败！' + p.context)
+                }
+            },
+            error: function(e) {
+                alert('请求失败!')
+            }
+        })
+    }
+}
+
+function delete_ftp(pk, name) {
+    if (confirm("确认删除负载均衡[" + name + "]？")) {
+        var post = {
+            pk: pk
+        }
+        jQuery.ajax({
+            type: 'post',
+            url: '/ftp/delete/',
+            data: JSON.stringify(post),
+            dataType: 'json',
+            success: function(p) {
+                if (p.flag == "Success") {
+                    alert("删除成功!")
+                    top.location = '/ftp/'
+                } else if (p.flag == "Error" && p.context == "AuthFailed") {
+                    alert('认证失败！请重新登录！')
+                    top.location = '/login/'
+                } else {
+                    alert('删除错误！' + p.context)
+                }
+            },
+            error: function(e) {
+                alert('请求失败!')
+            }
+        })
+    }
+}
+
+var t
+$(function() {
+    $('#ftp_logs').on('hide.bs.modal', function() {
+        $("#tail_access").empty()
+        $("#tail_error").empty()
+        clearTimeout(t)
+    })
+});
+
+$(function() {
+    $('#ftp_status').on('hide.bs.modal', function() {
+        $("#tail_access").empty()
+        $("#tail_error").empty()
+        clearTimeout(t)
+    })
+});
+
+function ftp_status(pk, getdata) {
+    if (getdata == 1) {
+        var post = {
+            pk: pk
+        }
+        jQuery.ajax({
+            type: 'post',
+            url: '/ftp/checkhttp/',
+            data: JSON.stringify(post),
+            dataType: "json",
+            success: function(p) {
+                if (p.flag == "Success") {
+                    $('#ftp_status_mtitle').text(p.config_id)
+                    $('#div_ftp_status_list').empty()
+
+                    for (var f in p.status.servers.server) {
+                        var server = p.status.servers.server[f]
+                        if (server.upstream == p.config_id) {
+                            tb = '<tr>'
+                            tb += '<td>' + server.index + '</td>'
+                            tb += '<td>' + server.name + '</td>'
+                            tb += '<td>' + server.rise + '</td>'
+                            tb += '<td>' + server.fall + '</td>'
+                            if (server.status == "up") {
+                                tb += '<td><span class="label label-success">正常</span></td>'
+                            } else {
+                                tb += '<td><span class="label label-warning">异常</span></td>'
+                            }
+                            tb += '</tr>'
+                            $('#div_ftp_status_list').append(tb)
+                        }
+                    }
+                    t = setTimeout(function() {
+                        ftp_status(pk, 1);
+                    }, 3000)
+
+
+                } else if (p.flag == "Error" && p.context == "AuthFailed") {
+                    alert('认证失败！请重新登录！')
+                    top.location = '/login/'
+                } else {
+                    clearTimeout(t)
+                    alert('查询失败！' + p.context)
+                }
+            },
+            error: function(e) {
+                clearTimeout(t)
+                alert('请求失败!')
+            }
+        })
+    } else {
+        ftp_status(pk, 1)
+        $('#ftp_status').modal('show')
+    }
+}
+
+
+function tailScroll(tail) {
+    var height = tail.get(0).scrollHeight;
+    tail.animate({
+        scrollTop: height
+    }, 500);
+    if (tail.val().split("\n").length > 500) {
+        tail.empty()
+    }
+}
+
+function get_ftp_logs(pk, position) {
+    if (position == null) {
+        $('#a_access_log').trigger('click')
+        $("#tail_access").empty()
+        $("#tail_error").empty()
+
+        position = {
+            "access": 0,
+            "error": 0
+        }
+        get_ftp_logs(pk, position)
+
+        $('#ftp_logs').modal('show')
+    } else {
+        post = {
+            "curr_position": position,
+            "pk": pk
+        }
+        jQuery.ajax({
+            type: 'post',
+            url: '/ftp/logs/',
+            data: JSON.stringify(post),
+            dataType: 'json',
+            success: function(p) {
+                if (p.flag == "Success") {
+                    if (p.log_body.access != "") {
+                        $('#tail_access').append(p.log_body.access)
+                        tailScroll($("#tail_access"))
+                    }
+                    if (p.log_body.error != "") {
+                        $('#tail_error').append(p.log_body.error)
+                        tailScroll($("#tail_error"))
+                    }
+
+                    t = setTimeout(function() {
+                        get_ftp_logs(pk, p.curr_position);
+                    }, 3000)
+
+                } else if (p.flag == "Error") {
+                    $("#tail_access").empty()
+                    $("#tail_error").empty()
+                    clearTimeout(t)
+                    alert('查询失败！错误：' + p.context)
+                }
+
+                if (p.flag == "Error" && p.context == "AuthFailed") {
+                    alert('认证失败！请重新登录！')
+                    top.location = '/login/'
+                }
+            },
+        })
+    }
+}
+
+function change_status(pk, status) {
+    if (confirm("确认要变更状态？")) {
+        var post = {
+            pk: pk,
+            status: status
+        }
+        jQuery.ajax({
+            type: 'post',
+            url: '/ftp/status/',
+            data: JSON.stringify(post),
+            dataType: 'json',
+            success: function(p) {
+                if (p.flag == "Success") {
+                    alert("变更成功!")
+                    top.location = '/ftp/'
+                } else if (p.flag == "Error" && p.context == "AuthFailed") {
+                    alert('认证失败！请重新登录！')
+                    top.location = '/login/'
+                } else {
+                    alert('变更错误！' + p.context)
+                }
+            },
+            error: function(e) {
+                alert('请求失败!')
+            }
+        })
+    }
+}
+
+function ftp_filter() {
+    window.location = '/ftp/?filter=' + $('#input_ftp_filter').val()
+}
+
+function save_balancer() {
+    if (confirm("确认要保存这样的配置？")) {
+        var base_config = $('#form_base_config').serializeObject()
+        var ssl_config = $('#form_ssl_config').serializeObject()
+        var upstream_list = []
+        $('#div_upstream_list form').each(function() {
+            upstream_list.push($(this).serializeObject())
+        })
+        var post = {
+            'base_config': base_config,
+            'ssl_config': ssl_config,
+            'upstream_list': upstream_list
+        }
+
+        jQuery.ajax({
+            type: 'post',
+            url: '/ftp/save/',
+            data: JSON.stringify(post),
+            dataType: 'json',
+            success: function(p) {
+                if (p.flag == "Success") {
+                    alert("保存成功!")
+                    top.location = '/ftp/'
+                } else if (p.flag == "Error" && p.context == "ArgsError") {
+                    alert('保存失败！配置项填写错误！')
+                } else if (p.flag == "Error" && p.context == "NicError") {
+                    alert('保存失败！内网网卡选择错误！')
+                } else if (p.flag == "Error" && p.context == "AuthFailed") {
+                    alert('认证失败！请重新登录！')
+                    top.location = '/login/'
+                } else {
+                    alert('保存错误！其他错误：' + p.context)
+                }
+            },
+            error: function(e) {
+                alert('请求失败!')
+            }
+        })
+    }
+
+}
+</script>
+{% endblock %}
