@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>OneinStack控制面板 | 创建管理员</title>
+    <title>OneinStack面板 | 创建管理员</title>
     {% load staticfiles %}
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <!-- Bootstrap 3.3.6 -->
-    <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css" %}">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Ionicons -->
@@ -29,11 +29,11 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="/"><b></b>控制面板</a>
+            <a href="/">OneinStack面板</a>
         </div>
         <!-- /.login-logo -->
         <div class="login-box-body">
-            <p class="login-box-msg">请创建您的管理员用户</p>
+            <p class="login-box-msg">创建管理员</p>
             <form id="form_create_superuser">
                 <div class="form-group has-feedback">
                     <input name="username" id="username" type="text" class="form-control" placeholder="用户名">
@@ -48,7 +48,7 @@
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 </div>
                 <div class="row">
-                    <div class="col-xs-4">
+                    <div class="col-xs-12">
                         <button type="button" onclick="create_superuser()" class="btn btn-primary btn-block btn-flat">创建</button>
                     </div>
                     <!-- /.col -->
@@ -60,9 +60,9 @@
     <!-- /.login-box -->
 
     <!-- jQuery 2.2.3 -->
-    <script src="{% static "plugins/jQuery/jquery-2.2.3.min.js" %}"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <!-- Bootstrap 3.3.6 -->
-    <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- iCheck -->
     <script>
     $.fn.serializeObject = function() {

@@ -1,12 +1,97 @@
 {% extends "base.html" %} {% block content %}
 <!-- Modal -->
+<div class="modal fade" id="change_password" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" style="width: 360px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="tab-content">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab_change_password">
+                            <form class="form-horizontal" id="form_change_password">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">* 用户名</label>
+                                    <div class="col-sm-6" id="div_name">
+                                        <input type="text" class="form-control" name="name" id="input_ftp_getname" readonly="readonly"> 
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">* 新密码</label>
+                                    <div class="col-sm-6" id="div_password">
+                                        <input type="password" class="form-control" name="password" id="input_ftp_newpassword" placeholder="FTP密码"> 
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="change_password_save()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="create_ftp" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" style="width: 500px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="nav-tabs-custom">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab_create_ftp">
+                            <form class="form-horizontal" id="form_create_ftp">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">* 用户名</label>
+                                    <div class="col-sm-7" id="div_name">
+                                        <input type="text" class="form-control" name="name" id="input_ftp_name" placeholder="FTP账号"> 
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">* 密码</label>
+                                    <div class="col-sm-7" id="div_password">
+                                        <input type="password" class="form-control" name="password" id="input_ftp_password" placeholder="FTP密码"> 
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">* 根目录</label>
+                                    <div class="col-sm-7" id="div_path">
+                                        <input type="text" class="form-control" name="path" id="input_ftp_path" placeholder="FTP根目录">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">备注</label>
+                                    <div class="col-sm-7" id="div_comment">
+                                        <input type="text" class="form-control" name="comment" id="input_ftp_comment" placeholder="FTP描述" onblur="check_form(this)">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="save_ftp()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-md-12">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <button type="button" class="btn btn-primary pull-left" onclick="edit_balancer(1)">创建FTP账号</button>
+                <button type="button" class="btn btn-primary pull-left" onclick="sync_ftp(1)">同步FTP账号</button>
+                <button type="button" class="btn btn-primary pull-left" onclick="create_ftp(1)">创建FTP账号</button>
                 <div class="input-group pull-right" style="width: 250px;">
-                    <input type="text" name="ftp_filter" id="input_ftp_filter" class="form-control pull-right" placeholder="请输入用户名或路径" onkeydown='if(event.keyCode==13){ftp_filter()}'>
+                    <input type="text" name="ftp_filter" id="input_ftp_filter" class="form-control pull-right" placeholder="搜索" onkeydown='if(event.keyCode==13){ftp_filter()}'>
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-default" onclick="ftp_filter()"><i class="fa fa-search"></i></button>
                     </div>
@@ -39,7 +124,7 @@
                             {% endif %}
                             </td>
                             <td>{{ server.comment }}</td>
-                            <td><button type="button" class="btn btn-success btn-xs" onclick="change_password('{{ server.id }}','password')">改密</button>
+                            <td><button type="button" class="btn btn-success btn-xs" onclick="change_password('{{ server.id }}','{{ server.name }}',1)">改密</button>
                             <button type="button" class="btn btn-danger btn-xs" onclick="delete_ftp('{{ server.id }}','{{ server.name }}')">删除</button></td>
                         </tr>
                         {% endfor %}
@@ -73,6 +158,7 @@ $('#page_header_descript').text('总览')
 $('#page_nav').text('FTP')
 $('#page_name').text('首页')
 
+
 function ftp_filter() {
     window.location = '/ftp/?filter=' + $('#input_ftp_filter').val()
 }
@@ -90,7 +176,6 @@ function delete_ftp(id, name) {
             dataType: 'json',
             success: function(p) {
                 if (p.flag == "Success") {
-                    alert("删除成功!")
                     top.location = '/ftp'
                 } else {
                     alert('删除错误！' + p.context)
@@ -104,23 +189,45 @@ function delete_ftp(id, name) {
 }
 
 function change_status(id,status) {
-    if (confirm("确认要变更状态？")) {
+    var post = {
+        id: id,
+        status: status
+    }
+    jQuery.ajax({
+        type: 'post',
+        url: '/ftp/status',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        data: JSON.stringify(post),
+        dataType: 'json',
+        success: function(p) {
+            if (p.flag == "Success") {
+                top.location = '/ftp'
+            } else {
+                alert('变更错误！' + p.context)
+            }
+        },
+        error: function(e) {
+            alert('请求失败!')
+        }
+    })
+}
+
+function sync_ftp(sync_status) {
+    if (confirm("确认要同步FTP账号？")) {
         var post = {
-            id: id,
-            status: status
+            sync_status: sync_status
         }
         jQuery.ajax({
             type: 'post',
-            url: '/ftp/setstatus',
+            url: '/ftp/reload',
             headers: {'X-CSRFToken': '{{ csrf_token }}'},
             data: JSON.stringify(post),
             dataType: 'json',
             success: function(p) {
                 if (p.flag == "Success") {
-                    alert("变更成功!")
                     top.location = '/ftp'
                 } else {
-                    alert('变更错误！' + p.context)
+                    alert('同步失败！' + p.context)
                 }
             },
             error: function(e) {
@@ -129,5 +236,76 @@ function change_status(id,status) {
         })
     }
 }
+
+function create_ftp(create) {
+    if (create == 1) {
+        $('#input_ftp_name').val('')
+        $('#input_ftp_password').val('')
+        $('#input_ftp_path').val('')
+        $('#input_ftp_comment').val('')
+        $('#create_ftp').modal('show')
+    }
+}
+
+function save_ftp() {
+    var post = {
+        'name': $('#input_ftp_name').serializeObject()['name'], 
+        'password': $('#input_ftp_password').serializeObject()['password'],
+        'path': $('#input_ftp_path').serializeObject()['path'],
+        'comment': $('#input_ftp_comment').serializeObject()['comment'] 
+    }
+    jQuery.ajax({
+        type: 'post',
+        url: '/ftp/create',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        data: JSON.stringify(post),
+        dataType: 'json',
+        success: function(p) {
+            if (p.flag == "Success") {
+                top.location = '/ftp'
+            } else {
+                alert('保存错误！其他错误：' + p.context)
+            }
+        },
+        error: function(e) {
+            alert('请求失败!')
+        }
+    })
+}
+
+function change_password(id,name,status) {
+    if (status == 1) {
+        window.id = id
+        $('#input_ftp_getname').val(name)
+        $('#input_ftp_newpassword').val('')
+        $('#change_password').modal('show')
+    }
+}
+     
+function change_password_save() {
+    var post = {
+        'id': id, 
+        'password': $('#input_ftp_newpassword').serializeObject()['password']
+    }
+
+    jQuery.ajax({
+        type: 'post',
+        url: '/ftp/password',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        data: JSON.stringify(post),
+        dataType: 'json',
+        success: function(p) {
+            if (p.flag == "Success") {
+                top.location = '/ftp'
+            } else {
+                alert('保存错误！其他错误：' + p.context)
+            }
+        },
+        error: function(e) {
+            alert('请求失败!')
+        }
+    })
+}
+
 </script>
 {% endblock %}
