@@ -14,13 +14,13 @@
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label">* 用户名</label>
                                     <div class="col-sm-6" id="div_name">
-                                        <input type="text" class="form-control" name="name" id="input_ftp_getname" readonly="readonly"> 
+                                        <input type="text" class="form-control" name="name" id="input_crontab_getname" readonly="readonly"> 
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label">* 新密码</label>
                                     <div class="col-sm-6" id="div_password">
-                                        <input type="password" class="form-control" name="password" id="input_ftp_newpassword" placeholder="FTP密码"> 
+                                        <input type="password" class="form-control" name="password" id="input_crontab_newpassword" placeholder="FTP密码"> 
                                     </div>
                                 </div>
                             </form>
@@ -36,7 +36,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="create_ftp" tabindex="-1" role="dialog">
+<div class="modal fade" id="create_crontab" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" style="width: 500px;">
         <div class="modal-content">
             <div class="modal-header">
@@ -45,30 +45,30 @@
             <div class="modal-body">
                 <div class="nav-tabs-custom">
                     <div class="tab-content">
-                        <div class="tab-pane active" id="tab_create_ftp">
-                            <form class="form-horizontal" id="form_create_ftp">
+                        <div class="tab-pane active" id="tab_create_crontab">
+                            <form class="form-horizontal" id="form_create_crontab">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">* 用户名</label>
                                     <div class="col-sm-7" id="div_name">
-                                        <input type="text" class="form-control" name="name" id="input_ftp_name" placeholder="FTP账号"> 
+                                        <input type="text" class="form-control" name="name" id="input_crontab_name" placeholder="FTP账号"> 
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">* 密码</label>
                                     <div class="col-sm-7" id="div_password">
-                                        <input type="password" class="form-control" name="password" id="input_ftp_password" placeholder="FTP密码"> 
+                                        <input type="password" class="form-control" name="password" id="input_crontab_password" placeholder="FTP密码"> 
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">* 根目录</label>
                                     <div class="col-sm-7" id="div_path">
-                                        <input type="text" class="form-control" name="path" id="input_ftp_path" placeholder="FTP根目录">
+                                        <input type="text" class="form-control" name="path" id="input_crontab_path" placeholder="FTP根目录">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">备注</label>
                                     <div class="col-sm-7" id="div_comment">
-                                        <input type="text" class="form-control" name="comment" id="input_ftp_comment" placeholder="FTP描述" onblur="check_form(this)">
+                                        <input type="text" class="form-control" name="comment" id="input_crontab_comment" placeholder="FTP描述" onblur="check_form(this)">
                                     </div>
                                 </div>
                             </form>
@@ -78,7 +78,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" onclick="save_ftp()">保存</button>
+                <button type="button" class="btn btn-primary" onclick="save_crontab()">保存</button>
             </div>
         </div>
     </div>
@@ -88,12 +88,12 @@
     <div class="col-md-12">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <button type="button" class="btn btn-primary pull-left" onclick="sync_ftp(1)">同步FTP账号</button>
-                <button type="button" class="btn btn-primary pull-left" onclick="create_ftp(1)">创建FTP账号</button>
+                <button type="button" class="btn btn-primary pull-left" onclick="sync_crontab(1)">同步计划任务</button>
+                <button type="button" class="btn btn-primary pull-left" onclick="create_crontab(1)">创建计划任务</button>
                 <div class="input-group pull-right" style="width: 250px;">
-                    <input type="text" name="ftp_filter" id="input_ftp_filter" class="form-control pull-right" placeholder="搜索" onkeydown='if(event.keyCode==13){ftp_filter()}'>
+                    <input type="text" name="crontab_filter" id="input_crontab_filter" class="form-control pull-right" placeholder="搜索" onkeydown='if(event.keyCode==13){crontab_filter()}'>
                     <div class="input-group-btn">
-                        <button type="button" class="btn btn-default" onclick="ftp_filter()"><i class="fa fa-search"></i></button>
+                        <button type="button" class="btn btn-default" onclick="crontab_filter()"><i class="fa fa-search"></i></button>
                     </div>
                 </div>
             </div>
@@ -102,9 +102,9 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>用户名</th>
-                            <th>密码</th>
-                            <th>根目录</th>
+                            <th>任务名称</th>
+                            <th>执行时间</th>
+                            <th>内容</th>
                             <th>状态</th>
                             <th>备注</th>
                             <th>操作</th>
@@ -114,8 +114,8 @@
                         {% for server in content %}
                         <tr>
                             <td>{{ server.name }}</td>
-                            <td>******</td>
-                            <td>{{ server.path }}</td>
+                            <td>{{ server.time }}</td>
+                            <td>{{ server.script }}</td>
                             <td>
                             {% if server.status %}
                                 <button type="button" class="btn btn-success btn-xs" onclick="change_status('{{ server.id }}',0)">已启用</button>
@@ -125,7 +125,7 @@
                             </td>
                             <td>{{ server.comment }}</td>
                             <td><button type="button" class="btn btn-success btn-xs" onclick="change_password('{{ server.id }}','{{ server.name }}',1)">改密</button>
-                            <button type="button" class="btn btn-danger btn-xs" onclick="delete_ftp('{{ server.id }}','{{ server.name }}')">删除</button></td>
+                            <button type="button" class="btn btn-danger btn-xs" onclick="delete_crontab('{{ server.id }}','{{ server.name }}')">删除</button></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -152,31 +152,31 @@
     </div>
 </div>
 <script>
-$('#menu_ftp_config').addClass('active')
-$('#page_header').text('FTP')
+$('#menu_crontab_config').addClass('active')
+$('#page_header').text('计划任务')
 $('#page_header_descript').text('总览')
-$('#page_nav').text('FTP')
+$('#page_nav').text('计划任务')
 $('#page_name').text('首页')
 
 
-function ftp_filter() {
-    window.location = '/ftp/?filter=' + $('#input_ftp_filter').val()
+function crontab_filter() {
+    window.location = '/crontab/?filter=' + $('#input_crontab_filter').val()
 }
 
-function delete_ftp(id, name) {
-    if (confirm("确认删除FTP账号[" + name + "]？")) {
+function delete_crontab(id, name) {
+    if (confirm("确认删除计划任务[" + name + "]？")) {
         var post = {
             id: id 
         }
         jQuery.ajax({
             type: 'post',
-            url: '/ftp/delete',
+            url: '/crontab/delete',
             headers: {'X-CSRFToken': '{{ csrf_token }}'},
             data: JSON.stringify(post),
             dataType: 'json',
             success: function(p) {
                 if (p.flag == "Success") {
-                    top.location = '/ftp'
+                    top.location = '/crontab'
                 } else {
                     alert('删除错误！' + p.content)
                 }
@@ -195,13 +195,13 @@ function change_status(id,status) {
     }
     jQuery.ajax({
         type: 'post',
-        url: '/ftp/status',
+        url: '/crontab/status',
         headers: {'X-CSRFToken': '{{ csrf_token }}'},
         data: JSON.stringify(post),
         dataType: 'json',
         success: function(p) {
             if (p.flag == "Success") {
-                top.location = '/ftp'
+                top.location = '/crontab'
             } else {
                 alert('变更错误！' + p.content)
             }
@@ -212,20 +212,20 @@ function change_status(id,status) {
     })
 }
 
-function sync_ftp(sync_status) {
-    if (confirm("确认要同步FTP账号？")) {
+function sync_crontab(sync_status) {
+    if (confirm("确认要同步计划任务？")) {
         var post = {
             sync_status: sync_status
         }
         jQuery.ajax({
             type: 'post',
-            url: '/ftp/reload',
+            url: '/crontab/reload',
             headers: {'X-CSRFToken': '{{ csrf_token }}'},
             data: JSON.stringify(post),
             dataType: 'json',
             success: function(p) {
                 if (p.flag == "Success") {
-                    top.location = '/ftp'
+                    top.location = '/crontab'
                 } else {
                     alert('同步失败！' + p.content)
                 }
@@ -237,32 +237,32 @@ function sync_ftp(sync_status) {
     }
 }
 
-function create_ftp(create) {
+function create_crontab(create) {
     if (create == 1) {
-        $('#input_ftp_name').val('')
-        $('#input_ftp_password').val('')
-        $('#input_ftp_path').val('')
-        $('#input_ftp_comment').val('')
-        $('#create_ftp').modal('show')
+        $('#input_crontab_name').val('')
+        $('#input_crontab_password').val('')
+        $('#input_crontab_path').val('')
+        $('#input_crontab_comment').val('')
+        $('#create_crontab').modal('show')
     }
 }
 
-function save_ftp() {
+function save_crontab() {
     var post = {
-        'name': $('#input_ftp_name').serializeObject()['name'], 
-        'password': $('#input_ftp_password').serializeObject()['password'],
-        'path': $('#input_ftp_path').serializeObject()['path'],
-        'comment': $('#input_ftp_comment').serializeObject()['comment'] 
+        'name': $('#input_crontab_name').serializeObject()['name'], 
+        'password': $('#input_crontab_password').serializeObject()['password'],
+        'path': $('#input_crontab_path').serializeObject()['path'],
+        'comment': $('#input_crontab_comment').serializeObject()['comment'] 
     }
     jQuery.ajax({
         type: 'post',
-        url: '/ftp/create',
+        url: '/crontab/create',
         headers: {'X-CSRFToken': '{{ csrf_token }}'},
         data: JSON.stringify(post),
         dataType: 'json',
         success: function(p) {
             if (p.flag == "Success") {
-                top.location = '/ftp'
+                top.location = '/crontab'
             } else {
                 alert('保存错误！其他错误：' + p.content)
             }
@@ -276,8 +276,8 @@ function save_ftp() {
 function change_password(id,name,status) {
     if (status == 1) {
         window.id = id
-        $('#input_ftp_getname').val(name)
-        $('#input_ftp_newpassword').val('')
+        $('#input_crontab_getname').val(name)
+        $('#input_crontab_newpassword').val('')
         $('#change_password').modal('show')
     }
 }
@@ -285,18 +285,18 @@ function change_password(id,name,status) {
 function change_password_save() {
     var post = {
         'id': id, 
-        'password': $('#input_ftp_newpassword').serializeObject()['password']
+        'password': $('#input_crontab_newpassword').serializeObject()['password']
     }
 
     jQuery.ajax({
         type: 'post',
-        url: '/ftp/password',
+        url: '/crontab/password',
         headers: {'X-CSRFToken': '{{ csrf_token }}'},
         data: JSON.stringify(post),
         dataType: 'json',
         success: function(p) {
             if (p.flag == "Success") {
-                top.location = '/ftp'
+                top.location = '/crontab'
             } else {
                 alert('保存错误！其他错误：' + p.content)
             }

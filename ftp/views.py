@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
@@ -11,6 +8,7 @@ import os, json, datetime
 from ftp.models import *
 #from ftp.forms import *
 
+# Create your views here.
 @login_required
 def index(request):
     filter = request.GET.get('filter', '')

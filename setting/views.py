@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 from django.shortcuts import render
 from django.template import RequestContext, loader
 from django.contrib.auth.decorators import login_required
@@ -8,6 +6,7 @@ from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 import json,time
 
+# Create your views here.
 @login_required
 def index(request):
     user = {

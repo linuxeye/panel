@@ -10,7 +10,10 @@ FTP       ftp          ftp新增删除修改等
 计划任务   crontab      设置计划任务
 面板设置   setting      面板端口，用户名、密码修改
 ```
-
+## 安装依赖
+```
+/usr/local/python/bin/pip install -r requirements.txt
+```
 ## 初始化数据库
 ```
 /usr/local/python/bin/python manage.py makemigrations

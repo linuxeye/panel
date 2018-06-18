@@ -1,3 +1,4 @@
 *.pyc
+*.db
 db.sqlite3
 *_initial.py
