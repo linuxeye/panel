@@ -26,7 +26,7 @@ def index(request):
         content = paginator.page(paginator.num_pages)
     user = {
         'name': request.user,
-        'date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') 
+        'date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     }
     return render(request, "ftp.html", { "content": content, 'filter' : filter, 'user' : user })
 
@@ -36,26 +36,29 @@ def reload(request):
         post = json.loads(request.body)
         sync_status = post['sync_status']
         if int(sync_status) == 1:
-            with open(settings.OPTIONS['pureftpd_install_dir'] + '/etc/pureftpd.passwd') as f:
-                for line in f:
-                    ftpuser_name = line.split(':')[0]
-                    ftpuser_password = line.split(':')[1]
-                    ftpuser_path = line.split(':')[5].rstrip('/./')
-                    if line.split(':')[-3]:
-                        ftpuser_status = 0
-                    else:
-                        ftpuser_status = 1
-                    if User.objects.filter(name=ftpuser_name).exists():
-                        ftpuser_update = User.objects.get(name = ftpuser_name)
-                        ftpuser_update.password =  ftpuser_password
-                        ftpuser_update.path = ftpuser_path
-                        ftpuser_update.status = ftpuser_status
-                        ftpuser_update.save()
-                    else:
-                        ftpuser_create = User(name = ftpuser_name, password = ftpuser_password, path = ftpuser_path, status = ftpuser_status)
-                        ftpuser_create.save()
-            os.system(settings.OPTIONS['pureftpd_install_dir'] + '/bin/pure-pw mkdb ' + settings.OPTIONS['pureftpd_install_dir'] + '/etc/pureftpd.pdb' + ' -f ' + settings.OPTIONS['pureftpd_install_dir'] + '/etc/pureftpd.passwd')
-            content = { 'flag': 'Success' }
+            if os.path.isfile(settings.OPTIONS['pureftpd_install_dir'] + '/etc/pureftpd.passwd'):
+                with open(settings.OPTIONS['pureftpd_install_dir'] + '/etc/pureftpd.passwd') as f:
+                    for line in f:
+                        ftpuser_name = line.split(':')[0]
+                        ftpuser_password = line.split(':')[1]
+                        ftpuser_path = line.split(':')[5].rstrip('/./')
+                        if line.split(':')[-3]:
+                            ftpuser_status = 0
+                        else:
+                            ftpuser_status = 1
+                        if User.objects.filter(name=ftpuser_name).exists():
+                            ftpuser_update = User.objects.get(name = ftpuser_name)
+                            ftpuser_update.password =  ftpuser_password
+                            ftpuser_update.path = ftpuser_path
+                            ftpuser_update.status = ftpuser_status
+                            ftpuser_update.save()
+                        else:
+                            ftpuser_create = User(name = ftpuser_name, password = ftpuser_password, path = ftpuser_path, status = ftpuser_status)
+                            ftpuser_create.save()
+                os.system(settings.OPTIONS['pureftpd_install_dir'] + '/bin/pure-pw mkdb ' + settings.OPTIONS['pureftpd_install_dir'] + '/etc/pureftpd.pdb' + ' -f ' + settings.OPTIONS['pureftpd_install_dir'] + '/etc/pureftpd.passwd')
+                content = { 'flag': 'Success' }
+            else:
+                content = { 'flag': 'Error', 'content': 'ftp账号不存在' }
         else:
             content = { 'flag': 'Error', 'content': '参数错误' }
     except Exception as e:
@@ -79,7 +82,7 @@ def create(request):
 def delete(request):
     try:
         post = json.loads(request.body)
-        username = User.objects.get(id=post['id']).name 
+        username = User.objects.get(id=post['id']).name
         User.objects.filter(id=post['id']).delete()
         os.system(settings.OPTIONS['pureftpd_install_dir'] + '/bin/pure-pw userdel ' + username + ' -f ' + settings.OPTIONS['pureftpd_install_dir'] + '/etc/pureftpd.passwd')
         os.system(settings.OPTIONS['pureftpd_install_dir'] + '/bin/pure-pw mkdb ' + settings.OPTIONS['pureftpd_install_dir'] + '/etc/pureftpd.pdb' + ' -f ' + settings.OPTIONS['pureftpd_install_dir'] + '/etc/pureftpd.passwd')
@@ -92,7 +95,7 @@ def delete(request):
 def password(request):
     try:
         post = json.loads(request.body)
-        username = User.objects.get(id=post['id']).name 
+        username = User.objects.get(id=post['id']).name
         new_password=post['password']
         User.objects.filter(id=post['id']).update(password=new_password)
         os.system(settings.OPTIONS['pureftpd_install_dir'] + '/bin/pure-pw passwd ' + username + ' -f ' + settings.OPTIONS['pureftpd_install_dir'] + '/etc/pureftpd.passwd' + ' <<EOF \n' + new_password + '\n' + new_password + '\nEOF')
@@ -107,7 +110,7 @@ def status(request):
     try:
         post = json.loads(request.body)
         status = post['status']
-        username = User.objects.get(id=post['id']).name 
+        username = User.objects.get(id=post['id']).name
         if int(status) == 0:
             os.system(settings.OPTIONS['pureftpd_install_dir'] + '/bin/pure-pw usermod ' + username + ' -f ' + settings.OPTIONS['pureftpd_install_dir'] + '/etc/pureftpd.passwd' + ' -r 1')
         else:

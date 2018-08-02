@@ -1,4 +1,4 @@
-from django.shortcuts import render 
+from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.http import JsonResponse, HttpResponseRedirect
@@ -19,7 +19,7 @@ def create_superuser(request):
         if request.method == 'POST':
             try:
                 #post = request.POST
-                post = json.loads(request.body) 
+                post = json.loads(request.body)
                 User.objects.create_superuser(username=post['username'], email=None, password=post['password'])
                 context = {'flag': 'Success'}
             except Exception as e:

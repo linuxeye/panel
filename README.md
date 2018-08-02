@@ -1,5 +1,8 @@
 # panel
 A powerful OneinStack Control Panel
+## 环境
+Python 3.6</br>
+Django 2.1
 ## 一期规划:
 ```
 导航       URL          功能
