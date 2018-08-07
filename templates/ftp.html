@@ -14,13 +14,13 @@
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label">* 用户名</label>
                                     <div class="col-sm-6" id="div_name">
-                                        <input type="text" class="form-control" name="name" id="input_ftp_getname" readonly="readonly"> 
+                                        <input type="text" class="form-control" name="name" id="input_ftp_getname" readonly="readonly">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label">* 新密码</label>
                                     <div class="col-sm-6" id="div_password">
-                                        <input type="password" class="form-control" name="password" id="input_ftp_newpassword" placeholder="FTP密码"> 
+                                        <input type="password" class="form-control" name="password" id="input_ftp_newpassword" placeholder="FTP密码">
                                     </div>
                                 </div>
                             </form>
@@ -50,13 +50,13 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">* 用户名</label>
                                     <div class="col-sm-7" id="div_name">
-                                        <input type="text" class="form-control" name="name" id="input_ftp_name" placeholder="FTP账号"> 
+                                        <input type="text" class="form-control" name="name" id="input_ftp_name" placeholder="FTP账号">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">* 密码</label>
                                     <div class="col-sm-7" id="div_password">
-                                        <input type="password" class="form-control" name="password" id="input_ftp_password" placeholder="FTP密码"> 
+                                        <input type="password" class="form-control" name="password" id="input_ftp_password" placeholder="FTP密码">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -111,21 +111,21 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for server in content %}
+                        {% for ftp in content %}
                         <tr>
-                            <td>{{ server.name }}</td>
+                            <td>{{ ftp.name }}</td>
                             <td>******</td>
-                            <td>{{ server.path }}</td>
+                            <td>{{ ftp.path }}</td>
                             <td>
-                            {% if server.status %}
-                                <button type="button" class="btn btn-success btn-xs" onclick="change_status('{{ server.id }}',0)">已启用</button>
+                            {% if ftp.status %}
+                                <button type="button" class="btn btn-success btn-xs" onclick="change_status({{ ftp.id }},0)">已启用</button>
                             {% else %}
-                                <button type="button" class="btn btn-danger btn-xs" onclick="change_status('{{ server.id }}',1)">已停用</button>
+                                <button type="button" class="btn btn-danger btn-xs" onclick="change_status({{ ftp.id }},1)">已停用</button>
                             {% endif %}
                             </td>
-                            <td>{{ server.comment }}</td>
-                            <td><button type="button" class="btn btn-success btn-xs" onclick="change_password('{{ server.id }}','{{ server.name }}',1)">改密</button>
-                            <button type="button" class="btn btn-danger btn-xs" onclick="delete_ftp('{{ server.id }}','{{ server.name }}')">删除</button></td>
+                            <td>{{ ftp.comment }}</td>
+                            <td><button type="button" class="btn btn-success btn-xs" onclick="change_password({{ ftp.id }},'{{ ftp.name }}',1)">改密</button>
+                            <button type="button" class="btn btn-danger btn-xs" onclick="delete_ftp({{ ftp.id }},'{{ ftp.name }}')">删除</button></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -166,7 +166,7 @@ function ftp_filter() {
 function delete_ftp(id, name) {
     if (confirm("确认删除FTP账号[" + name + "]？")) {
         var post = {
-            id: id 
+            id: id
         }
         jQuery.ajax({
             type: 'post',
@@ -249,10 +249,10 @@ function create_ftp(create) {
 
 function save_ftp() {
     var post = {
-        'name': $('#input_ftp_name').serializeObject()['name'], 
+        'name': $('#input_ftp_name').serializeObject()['name'],
         'password': $('#input_ftp_password').serializeObject()['password'],
         'path': $('#input_ftp_path').serializeObject()['path'],
-        'comment': $('#input_ftp_comment').serializeObject()['comment'] 
+        'comment': $('#input_ftp_comment').serializeObject()['comment']
     }
     jQuery.ajax({
         type: 'post',
@@ -281,10 +281,10 @@ function change_password(id,name,status) {
         $('#change_password').modal('show')
     }
 }
-     
+
 function change_password_save() {
     var post = {
-        'id': id, 
+        'id': id,
         'password': $('#input_ftp_newpassword').serializeObject()['password']
     }
 

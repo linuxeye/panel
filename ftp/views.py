@@ -6,7 +6,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
 import os, json, datetime
 from ftp.models import *
-#from ftp.forms import *
 
 # Create your views here.
 @login_required

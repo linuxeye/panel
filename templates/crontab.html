@@ -1,6 +1,6 @@
 {% extends "base.html" %} {% block content %}
 <!-- Modal -->
-<div class="modal fade" id="change_password" tabindex="-1" role="dialog">
+<div class="modal fade" id="edit_crontab" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" style="width: 360px;">
         <div class="modal-content">
             <div class="modal-header">
@@ -9,18 +9,24 @@
             <div class="modal-body">
                 <div class="tab-content">
                     <div class="tab-content">
-                        <div class="tab-pane active" id="tab_change_password">
-                            <form class="form-horizontal" id="form_change_password">
+                        <div class="tab-pane active" id="tab_edit_crontab">
+                            <form class="form-horizontal" id="form_edit_crontab">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label">* 用户名</label>
+                                    <label class="col-sm-4 control-label">* 任务名</label>
                                     <div class="col-sm-6" id="div_name">
-                                        <input type="text" class="form-control" name="name" id="input_crontab_getname" readonly="readonly"> 
+                                        <input type="text" class="form-control" name="name" id="input_crontab_getname" placeholder="任务名称">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label">* 新密码</label>
-                                    <div class="col-sm-6" id="div_password">
-                                        <input type="password" class="form-control" name="password" id="input_crontab_newpassword" placeholder="FTP密码"> 
+                                    <label class="col-sm-4 control-label">* 执行时间</label>
+                                    <div class="col-sm-6" id="div_time">
+                                        <input type="text" class="form-control" name="time" id="input_crontab_gettime" placeholder="执行时间">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">* 执行脚本</label>
+                                    <div class="col-sm-6" id="div_script">
+                                        <input type="text" class="form-control" name="script" id="input_crontab_getscript" placeholder="执行脚本">
                                     </div>
                                 </div>
                             </form>
@@ -30,7 +36,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" onclick="change_password_save()">保存</button>
+                <button type="button" class="btn btn-primary" onclick="edit_crontab_save()">保存</button>
             </div>
         </div>
     </div>
@@ -48,27 +54,21 @@
                         <div class="tab-pane active" id="tab_create_crontab">
                             <form class="form-horizontal" id="form_create_crontab">
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">* 用户名</label>
+                                    <label class="col-sm-3 control-label">* 任务名</label>
                                     <div class="col-sm-7" id="div_name">
-                                        <input type="text" class="form-control" name="name" id="input_crontab_name" placeholder="FTP账号"> 
+                                        <input type="text" class="form-control" name="name" id="input_crontab_name" placeholder="任务名">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">* 密码</label>
-                                    <div class="col-sm-7" id="div_password">
-                                        <input type="password" class="form-control" name="password" id="input_crontab_password" placeholder="FTP密码"> 
+                                    <label class="col-sm-3 control-label">* 执行时间</label>
+                                    <div class="col-sm-7" id="div_time">
+                                        <input type="text" class="form-control" name="time" id="input_crontab_time" placeholder="执行时间">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">* 根目录</label>
-                                    <div class="col-sm-7" id="div_path">
-                                        <input type="text" class="form-control" name="path" id="input_crontab_path" placeholder="FTP根目录">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">备注</label>
-                                    <div class="col-sm-7" id="div_comment">
-                                        <input type="text" class="form-control" name="comment" id="input_crontab_comment" placeholder="FTP描述" onblur="check_form(this)">
+                                    <label class="col-sm-3 control-label">* 脚本</label>
+                                    <div class="col-sm-7" id="div_script">
+                                        <input type="text" class="form-control" name="script" id="input_crontab_script" placeholder="执行脚本">
                                     </div>
                                 </div>
                             </form>
@@ -104,28 +104,26 @@
                         <tr>
                             <th>任务名称</th>
                             <th>执行时间</th>
-                            <th>内容</th>
+                            <th>脚本</th>
                             <th>状态</th>
-                            <th>备注</th>
                             <th>操作</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for server in content %}
+                        {% for crontab in content %}
                         <tr>
-                            <td>{{ server.name }}</td>
-                            <td>{{ server.time }}</td>
-                            <td>{{ server.script }}</td>
+                            <td>{{ crontab.name }}</td>
+                            <td>{{ crontab.time }}</td>
+                            <td>{{ crontab.script }}</td>
                             <td>
-                            {% if server.status %}
-                                <button type="button" class="btn btn-success btn-xs" onclick="change_status('{{ server.id }}',0)">已启用</button>
+                            {% if crontab.status %}
+                                <button type="button" class="btn btn-success btn-xs" onclick="change_status({{ crontab.id }},0)">已启用</button>
                             {% else %}
-                                <button type="button" class="btn btn-danger btn-xs" onclick="change_status('{{ server.id }}',1)">已停用</button>
+                                <button type="button" class="btn btn-danger btn-xs" onclick="change_status({{ crontab.id }},1)">已停用</button>
                             {% endif %}
                             </td>
-                            <td>{{ server.comment }}</td>
-                            <td><button type="button" class="btn btn-success btn-xs" onclick="change_password('{{ server.id }}','{{ server.name }}',1)">改密</button>
-                            <button type="button" class="btn btn-danger btn-xs" onclick="delete_crontab('{{ server.id }}','{{ server.name }}')">删除</button></td>
+                            <td><button type="button" class="btn btn-success btn-xs" onclick="edit_crontab({{ crontab.id }},'{{ crontab.name }}','{{ crontab.time }}','{{ crontab.script }}',1)">编辑</button>
+                            <button type="button" class="btn btn-danger btn-xs" onclick="delete_crontab({{ crontab.id }},'{{ crontab.name }}')">删除</button></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -158,7 +156,6 @@ $('#page_header_descript').text('总览')
 $('#page_nav').text('计划任务')
 $('#page_name').text('首页')
 
-
 function crontab_filter() {
     window.location = '/crontab/?filter=' + $('#input_crontab_filter').val()
 }
@@ -166,7 +163,7 @@ function crontab_filter() {
 function delete_crontab(id, name) {
     if (confirm("确认删除计划任务[" + name + "]？")) {
         var post = {
-            id: id 
+            id: id
         }
         jQuery.ajax({
             type: 'post',
@@ -237,22 +234,20 @@ function sync_crontab(sync_status) {
     }
 }
 
-function create_crontab(create) {
-    if (create == 1) {
+function create_crontab(create_status) {
+    if (create_status == 1) {
         $('#input_crontab_name').val('')
-        $('#input_crontab_password').val('')
-        $('#input_crontab_path').val('')
-        $('#input_crontab_comment').val('')
+        $('#input_crontab_time').val('')
+        $('#input_crontab_script').val('')
         $('#create_crontab').modal('show')
     }
 }
 
 function save_crontab() {
     var post = {
-        'name': $('#input_crontab_name').serializeObject()['name'], 
-        'password': $('#input_crontab_password').serializeObject()['password'],
-        'path': $('#input_crontab_path').serializeObject()['path'],
-        'comment': $('#input_crontab_comment').serializeObject()['comment'] 
+        'name': $('#input_crontab_name').serializeObject()['name'],
+        'time': $('#input_crontab_time').serializeObject()['time'],
+        'script': $('#input_crontab_script').serializeObject()['script'],
     }
     jQuery.ajax({
         type: 'post',
@@ -273,24 +268,26 @@ function save_crontab() {
     })
 }
 
-function change_password(id,name,status) {
+function edit_crontab(id,name,time,script,status) {
     if (status == 1) {
         window.id = id
         $('#input_crontab_getname').val(name)
-        $('#input_crontab_newpassword').val('')
-        $('#change_password').modal('show')
+        $('#input_crontab_gettime').val(time)
+        $('#input_crontab_getscript').val(script)
+        $('#edit_crontab').modal('show')
     }
 }
-     
-function change_password_save() {
-    var post = {
-        'id': id, 
-        'password': $('#input_crontab_newpassword').serializeObject()['password']
-    }
 
+function edit_crontab_save() {
+    var post = {
+        'id': id,
+        'name': $('#input_crontab_getname').serializeObject()['name'],
+        'time': $('#input_crontab_gettime').serializeObject()['time'],
+        'script': $('#input_crontab_getscript').serializeObject()['script']
+    }
     jQuery.ajax({
         type: 'post',
-        url: '/crontab/password',
+        url: '/crontab/update',
         headers: {'X-CSRFToken': '{{ csrf_token }}'},
         data: JSON.stringify(post),
         dataType: 'json',
