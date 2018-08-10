@@ -1,0 +1,116 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>OneinStack面板 | 创建管理员</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/admin-lte/2.4.3/css/AdminLTE.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/iCheck/1.0.2/skins/square/blue.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="/">OneinStack面板</a>
+        </div>
+        <!-- /.login-logo -->
+        <div class="login-box-body">
+            <p class="login-box-msg">创建管理员</p>
+            <form id="form_register">
+                <div class="form-group has-feedback">
+                    <input name="username" id="username" type="text" class="form-control" placeholder="用户名">
+                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input name="password" id="password" type="password" class="form-control" placeholder="密码">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input name="verify_password" id="verify_password" type="password" class="form-control" placeholder="验证密码">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <button type="button" onclick="register()" class="btn btn-primary btn-block btn-flat">创建</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </form>
+        </div>
+        <!-- /.login-box-body -->
+    </div>
+    <!-- /.login-box -->
+
+    <!-- jQuery 2.2.3 -->
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Bootstrap 3.3.6 -->
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- iCheck -->
+    <script>
+    $.fn.serializeObject = function() {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function() {
+            if (o[this.name]) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
+
+    function register() {
+        var username = $('#username').val()
+        var password = $('#password').val()
+        var verify_password = $('#verify_password').val()
+        if (username && (password == verify_password)) {
+            if (confirm("确认使用[" + username + "]做为您的管理员用户吗？")) {
+                jQuery.ajax({
+                    type: 'post',
+                    url: '/register/',
+                    headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                    data: JSON.stringify($('#form_register').serializeObject()),
+                    dataType: 'json',
+                    success: function(p) {
+                        if (p.flag == "Success") {
+                            alert("创建成功！")
+                            top.location = '/login/'
+                        } else if (p.flag == "Error") {
+                            alert('创建失败！错误：' + p.context)
+                            top.location = '/login/'
+                        }
+                    },
+                    error: function(e) {
+                        alert('请求失败!')
+                    }
+                })
+            }
+        } else {
+            alert('输入密码不一致！')
+        }
+    }
+    </script>
+</body>
+</html>
