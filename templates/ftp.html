@@ -1,4 +1,6 @@
 {% extends "base.html" %} {% block content %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 <!-- Modal -->
 <div class="modal fade" id="change_password" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" style="width: 360px;">

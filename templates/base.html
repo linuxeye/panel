@@ -1,10 +1,10 @@
-{% load staticfiles %}
+{% load i18n %}
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>OneinStack面板</title>
+    <title>OneinStack {% trans "Panel" %}</title>
     <!-- Bootstrap 3.3.7 -->
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!-- Tell the browser to be responsive to screen width -->
@@ -37,6 +37,7 @@
 
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
+        {% get_current_language as LANGUAGE_CODE %}
         <!-- Main Header -->
         <header class="main-header">
             <!-- Logo -->
@@ -92,12 +93,12 @@
                 <!-- Sidebar Menu -->
                 <ul class="sidebar-menu" data-widget="tree">
                     <!-- Optionally, you can add icons to the links -->
-                    <li id="menu_dashboard"><a href="/home/"><i class="fa fa-dashboard"></i><span>首页</span></a></li>
-                    <li id="menu_web"><a href="/web/"><i class="fa fa-globe"></i><span>网站</span></a></li>
-                    <li id="menu_ftp"><a href="/ftp/"><i class="fa fa-download"></i><span>FTP</span></a></li>
-                    <li id="menu_database"><a href="/database/"><i class="fa fa-database"></i><span>数据库</span></a></li>
-                    <li id="menu_crontab"><a href="/crontab/"><i class="fa fa-tasks"></i><span>计划任务</span></a></li>
-                    <li id="menu_setting"><a href="/setting/"><i class="fa fa-cogs"></i><span>面板配置</span></a></li>
+                    <li id="menu_dashboard"><a href="/home/"><i class="fa fa-dashboard"></i><span>{% trans "Home" %}</span></a></li>
+                    <li id="menu_web"><a href="/web/"><i class="fa fa-globe"></i><span>{% trans "WEB" %}</span></a></li>
+                    <li id="menu_ftp"><a href="/ftp/"><i class="fa fa-download"></i><span>{% trans "FTP" %}</span></a></li>
+                    <li id="menu_database"><a href="/database/"><i class="fa fa-database"></i><span>{% trans "Database" %}</span></a></li>
+                    <li id="menu_crontab"><a href="/crontab/"><i class="fa fa-tasks"></i><span>{% trans "Crontab" %}</span></a></li>
+                    <li id="menu_setting"><a href="/setting/"><i class="fa fa-cogs"></i><span>{% trans "Setting" %}</span></a></li>
                 </ul>
                 <!-- /.sidebar-menu -->
             </section>

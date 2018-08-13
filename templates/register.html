@@ -1,10 +1,11 @@
-{% load staticfiles %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>OneinStack面板 | 创建管理员</title>
+    <title>OneinStack{% trans Panel %} | {% trans "Create super user" %}</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -29,27 +30,27 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="/">OneinStack面板</a>
+            <a href="/">OneinStack{% trans Panel %}</a>
         </div>
         <!-- /.login-logo -->
         <div class="login-box-body">
-            <p class="login-box-msg">创建管理员</p>
+            <p class="login-box-msg">{% trans "Create super user" %}</p>
             <form id="form_register">
                 <div class="form-group has-feedback">
-                    <input name="username" id="username" type="text" class="form-control" placeholder="用户名">
+                    <input name="username" id="username" type="text" class="form-control" placeholder="{% trans "Username" %}">
                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
                 </div>
                 <div class="form-group has-feedback">
-                    <input name="password" id="password" type="password" class="form-control" placeholder="密码">
+                    <input name="password" id="password" type="password" class="form-control" placeholder="{% trans "Password" %}">
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 </div>
                 <div class="form-group has-feedback">
-                    <input name="verify_password" id="verify_password" type="password" class="form-control" placeholder="验证密码">
+                    <input name="verify_password" id="verify_password" type="password" class="form-control" placeholder="{% trans "Re-enter password" %}">
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <button type="button" onclick="register()" class="btn btn-primary btn-block btn-flat">创建</button>
+                        <button type="button" onclick="register()" class="btn btn-primary btn-block btn-flat">{% trans "Register" %}</button>
                     </div>
                     <!-- /.col -->
                 </div>

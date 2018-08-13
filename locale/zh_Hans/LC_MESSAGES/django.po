@@ -1,0 +1,166 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-08-13 19:21+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: panel/settings.py:125
+msgid "English"
+msgstr ""
+
+#: panel/settings.py:126
+msgid "Chinese"
+msgstr ""
+
+#: templates/base.html:7 templates/login.html:7 templates/login.html:35
+msgid "Panel"
+msgstr "面板"
+
+#: templates/base.html:96 templates/crontab.html:159 templates/database.html:13
+#: templates/setting.html:87 templates/web.html:13
+msgid "Home"
+msgstr "首页"
+
+#: templates/base.html:97
+msgid "WEB"
+msgstr "网站"
+
+#: templates/base.html:98
+msgid "FTP"
+msgstr "FTP"
+
+#: templates/base.html:99
+msgid "Database"
+msgstr "数据库"
+
+#: templates/base.html:100 templates/crontab.html:156
+#: templates/crontab.html:158
+msgid "Crontab"
+msgstr "计划任务"
+
+#: templates/base.html:101 templates/setting.html:84 templates/setting.html:86
+msgid "Setting"
+msgstr "设置"
+
+#: templates/crontab.html:17 templates/crontab.html:19
+#: templates/crontab.html:59 templates/crontab.html:61
+#: templates/crontab.html:107
+msgid "Crontab name"
+msgstr "任务名"
+
+#: templates/crontab.html:23 templates/crontab.html:25
+#: templates/crontab.html:65 templates/crontab.html:67
+#: templates/crontab.html:108
+msgid "Execution time"
+msgstr "执行时间"
+
+#: templates/crontab.html:29 templates/crontab.html:31
+#: templates/crontab.html:71 templates/crontab.html:73
+msgid "Crontab script"
+msgstr "脚本"
+
+#: templates/crontab.html:40 templates/crontab.html:82
+msgid "Close"
+msgstr "关闭"
+
+#: templates/crontab.html:41 templates/crontab.html:83
+msgid "Save"
+msgstr "保存"
+
+#: templates/crontab.html:93
+msgid "Sync local crontab"
+msgstr "同步本地计划任务"
+
+#: templates/crontab.html:94
+msgid "Create crontab"
+msgstr "创建计划任务"
+
+#: templates/crontab.html:96
+msgid "search"
+msgstr "搜索"
+
+#: templates/crontab.html:109
+msgid "Script"
+msgstr ""
+
+#: templates/crontab.html:110
+msgid "Status"
+msgstr "状态"
+
+#: templates/crontab.html:111
+msgid "Operate"
+msgstr "操作"
+
+#: templates/crontab.html:122
+msgid "Started"
+msgstr "已启动"
+
+#: templates/crontab.html:124
+msgid "Stopped"
+msgstr "已停止"
+
+#: templates/crontab.html:127
+msgid "Edit"
+msgstr "编辑"
+
+#: templates/crontab.html:128
+msgid "Delete"
+msgstr "删除"
+
+#: templates/login.html:7 templates/login.html:59
+msgid "Login"
+msgstr "登录"
+
+#: templates/login.html:39
+msgid "SIGN IN TO AUTH"
+msgstr "登录验证"
+
+#: templates/login.html:43 templates/register.html:40 templates/setting.html:56
+msgid "Username"
+msgstr "用户名"
+
+#: templates/login.html:47 templates/register.html:44 templates/setting.html:64
+msgid "Password"
+msgstr "密码"
+
+#: templates/register.html:8 templates/register.html:37
+msgid "Create super user"
+msgstr "创建超级用户"
+
+#: templates/register.html:48
+msgid "Re-enter password"
+msgstr "确认密码"
+
+#: templates/register.html:53
+msgid "Register"
+msgstr "注册"
+
+#: templates/setting.html:8
+msgid "Administrator Password"
+msgstr "管理员密码"
+
+#: templates/setting.html:13
+msgid "Old password"
+msgstr "旧密码"
+
+#: templates/setting.html:16 templates/setting.html:33
+msgid "Please input password"
+msgstr "请输入密码"
+
+#: templates/setting.html:21 templates/setting.html:30
+msgid "New password"
+msgstr "新密码"

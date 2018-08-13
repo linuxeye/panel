@@ -1,10 +1,10 @@
-{% load staticfiles %}
+{% load i18n %}
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>OneinStack面板 | 登陆</title>
+  <title>OneinStack{% trans "Panel" %} | {% trans "Login" %}</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -30,20 +30,21 @@
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
+  {% get_current_language as LANGUAGE_CODE %}
   <div class="login-logo">
-    <a href="/">OneinStack面板</a>
+    <a href="/">OneinStack{% trans "Panel" %}</a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
-    <p class="login-box-msg">登录验证</p>
+    <p class="login-box-msg">{% trans "SIGN IN TO AUTH" %}</p>
     <form action="/login/" method="post">
         {% csrf_token %}
         <div class="form-group has-feedback">
-            <input type="text" name="username" class="form-control" placeholder="用户名">
+            <input type="text" name="username" class="form-control" placeholder="{% trans "Username" %}">
             <span class="glyphicon glyphicon-user form-control-feedback"></span>
         </div>
         <div class="form-group has-feedback">
-            <input type="password" name="password" class="form-control" placeholder="密码">
+            <input type="password" name="password" class="form-control" placeholder="{% trans "Password" %}">
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
         </div>
         <div class="row">
@@ -55,7 +56,7 @@
                 </div>
             </div-->
             <div class="col-xs-12">
-                <button type="submit" value="login" class="btn btn-primary btn-block btn-flat">登录</button>
+                <button type="submit" value="login" class="btn btn-primary btn-block btn-flat">{% trans "Login" %}</button>
                 <input type="hidden" name="next" value="{{ next }}" />
             </div>
         </div>

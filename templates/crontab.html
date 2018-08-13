@@ -1,7 +1,9 @@
 {% extends "base.html" %} {% block content %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 <!-- Modal -->
 <div class="modal fade" id="edit_crontab" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" style="width: 360px;">
+    <div class="modal-dialog modal-lg" style="width: 420px;">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -12,21 +14,21 @@
                         <div class="tab-pane active" id="tab_edit_crontab">
                             <form class="form-horizontal" id="form_edit_crontab">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label">* 任务名</label>
+                                    <label class="col-sm-4 control-label">* {% trans "Crontab name" %}</label>
                                     <div class="col-sm-6" id="div_name">
-                                        <input type="text" class="form-control" name="name" id="input_crontab_getname" placeholder="任务名称">
+                                        <input type="text" class="form-control" name="name" id="input_crontab_getname" placeholder="{% trans "Crontab name" %}">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label">* 执行时间</label>
+                                    <label class="col-sm-4 control-label">* {% trans "Execution time" %}</label>
                                     <div class="col-sm-6" id="div_time">
-                                        <input type="text" class="form-control" name="time" id="input_crontab_gettime" placeholder="执行时间">
+                                        <input type="text" class="form-control" name="time" id="input_crontab_gettime" placeholder="{% trans "Execution time" %}">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label">* 执行脚本</label>
+                                    <label class="col-sm-4 control-label">* {% trans "Crontab script" %}</label>
                                     <div class="col-sm-6" id="div_script">
-                                        <input type="text" class="form-control" name="script" id="input_crontab_getscript" placeholder="执行脚本">
+                                        <input type="text" class="form-control" name="script" id="input_crontab_getscript" placeholder="{% trans "Crontab script" %}">
                                     </div>
                                 </div>
                             </form>
@@ -35,15 +37,15 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" onclick="edit_crontab_save()">保存</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
+                <button type="button" class="btn btn-primary" onclick="edit_crontab_save()">{% trans "Save" %}</button>
             </div>
         </div>
     </div>
 </div>
 
 <div class="modal fade" id="create_crontab" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" style="width: 500px;">
+    <div class="modal-dialog modal-lg" style="width: 600px;">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -54,21 +56,21 @@
                         <div class="tab-pane active" id="tab_create_crontab">
                             <form class="form-horizontal" id="form_create_crontab">
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">* 任务名</label>
+                                    <label class="col-sm-3 control-label">* {% trans "Crontab name" %}</label>
                                     <div class="col-sm-7" id="div_name">
-                                        <input type="text" class="form-control" name="name" id="input_crontab_name" placeholder="任务名">
+                                        <input type="text" class="form-control" name="name" id="input_crontab_name" placeholder="{% trans "Crontab name" %}">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">* 执行时间</label>
+                                    <label class="col-sm-3 control-label">* {% trans "Execution time" %}</label>
                                     <div class="col-sm-7" id="div_time">
-                                        <input type="text" class="form-control" name="time" id="input_crontab_time" placeholder="执行时间">
+                                        <input type="text" class="form-control" name="time" id="input_crontab_time" placeholder="{% trans "Execution time" %}">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">* 脚本</label>
+                                    <label class="col-sm-3 control-label">* {% trans "Crontab script" %}</label>
                                     <div class="col-sm-7" id="div_script">
-                                        <input type="text" class="form-control" name="script" id="input_crontab_script" placeholder="执行脚本">
+                                        <input type="text" class="form-control" name="script" id="input_crontab_script" placeholder="{% trans "Crontab script" %}">
                                     </div>
                                 </div>
                             </form>
@@ -77,8 +79,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" onclick="save_crontab()">保存</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
+                <button type="button" class="btn btn-primary" onclick="save_crontab()">{% trans "Save" %}</button>
             </div>
         </div>
     </div>
@@ -88,10 +90,10 @@
     <div class="col-md-12">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <button type="button" class="btn btn-primary pull-left" onclick="sync_crontab(1)">同步计划任务</button>
-                <button type="button" class="btn btn-primary pull-left" onclick="create_crontab(1)">创建计划任务</button>
+                <button type="button" class="btn btn-primary pull-left" onclick="sync_crontab(1)">{% trans "Sync local crontab" %}</button>
+                <button type="button" class="btn btn-primary pull-left" onclick="create_crontab(1)">{% trans "Create crontab" %}</button>
                 <div class="input-group pull-right" style="width: 250px;">
-                    <input type="text" name="crontab_filter" id="input_crontab_filter" class="form-control pull-right" placeholder="搜索" onkeydown='if(event.keyCode==13){crontab_filter()}'>
+                    <input type="text" name="crontab_filter" id="input_crontab_filter" class="form-control pull-right" placeholder="{% trans "search" %}" onkeydown='if(event.keyCode==13){crontab_filter()}'>
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-default" onclick="crontab_filter()"><i class="fa fa-search"></i></button>
                     </div>
@@ -102,11 +104,11 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>任务名称</th>
-                            <th>执行时间</th>
-                            <th>脚本</th>
-                            <th>状态</th>
-                            <th>操作</th>
+                            <th>{% trans "Crontab name" %}</th>
+                            <th>{% trans "Execution time" %}</th>
+                            <th>{% trans "Script" %}</th>
+                            <th>{% trans "Status" %}</th>
+                            <th>{% trans "Operate" %}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -117,13 +119,13 @@
                             <td>{{ crontab.script }}</td>
                             <td>
                             {% if crontab.status %}
-                                <button type="button" class="btn btn-success btn-xs" onclick="change_status({{ crontab.id }},0)">已启用</button>
+                                <button type="button" class="btn btn-success btn-xs" onclick="change_status({{ crontab.id }},0)">{% trans "Started" %}</button>
                             {% else %}
-                                <button type="button" class="btn btn-danger btn-xs" onclick="change_status({{ crontab.id }},1)">已停用</button>
+                                <button type="button" class="btn btn-danger btn-xs" onclick="change_status({{ crontab.id }},1)">{% trans "Stopped" %}</button>
                             {% endif %}
                             </td>
-                            <td><button type="button" class="btn btn-success btn-xs" onclick="edit_crontab({{ crontab.id }},'{{ crontab.name }}','{{ crontab.time }}','{{ crontab.script }}',1)">编辑</button>
-                            <button type="button" class="btn btn-danger btn-xs" onclick="delete_crontab({{ crontab.id }},'{{ crontab.name }}')">删除</button></td>
+                            <td><button type="button" class="btn btn-success btn-xs" onclick="edit_crontab({{ crontab.id }},'{{ crontab.name }}','{{ crontab.time }}','{{ crontab.script }}',1)">{% trans "Edit" %}</button>
+                            <button type="button" class="btn btn-danger btn-xs" onclick="delete_crontab({{ crontab.id }},'{{ crontab.name }}')">{% trans "Delete" %}</button></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -151,10 +153,10 @@
 </div>
 <script>
 $('#menu_crontab_config').addClass('active')
-$('#page_header').text('计划任务')
+$('#page_header').text({% trans "Crontab" %})
 $('#page_header_descript').text('总览')
-$('#page_nav').text('计划任务')
-$('#page_name').text('首页')
+$('#page_nav').text({% trans "Crontab" %})
+$('#page_name').text({% trans "Home" %})
 
 function crontab_filter() {
     window.location = '/crontab/?filter=' + $('#input_crontab_filter').val()
