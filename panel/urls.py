@@ -9,7 +9,7 @@ urlpatterns = [
     re_path(r'^login/$', LoginView.as_view(template_name='login.html'), name='login'),
     re_path(r'^logout/$', LogoutView.as_view(next_page=LOGIN_URL), name='logout'),
     re_path(r'^home/', include('home.urls')),
-    re_path(r'^web/', include('web.urls')),
+    re_path(r'^website/', include('website.urls')),
     re_path(r'^database/', include('database.urls')),
     re_path(r'^setting/', include('setting.urls')),
     re_path(r'^ftp/', include('ftp.urls')),
