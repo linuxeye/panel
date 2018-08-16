@@ -21,8 +21,7 @@
                         <label class="col-sm-1 control-label">{% trans "New password" %}</label>
                         <div class="col-sm-4">
                             <div id="div_new_password">
-                                <input type="password" class="form-control" name="new_password" id="input_new_password" placeholder="{% trans "Please input
-new password" %}" onblur="check_pass()">
+                                <input type="password" class="form-control" name="new_password" id="input_new_password" placeholder="{% trans "Please input new password" %}" onblur="check_pass()">
                             </div>
                         </div>
                     </div>
@@ -30,7 +29,7 @@ new password" %}" onblur="check_pass()">
                         <label class="col-sm-1 control-label">{% trans "New password" %}</label>
                         <div class="col-sm-4">
                             <div id="div_verify_password">
-                                <input type="password" class="form-control" name="verify_password" id="input_verify_password" placeholder="{% trans "Please input password" %}" onblur="check_pass()">
+                                <input type="password" class="form-control" name="verify_password" id="input_verify_password" placeholder="{% trans "Please input new password" %}" onblur="check_pass()">
                             </div>
                         </div>
                     </div>
@@ -141,7 +140,7 @@ function modify_pass() {
         if (confirm("确认要修改密码？")) {
             jQuery.ajax({
                 type: 'post',
-                url: '/setting/password/',
+                url: '/setting/password',
                 headers: {'X-CSRFToken': '{{ csrf_token }}'},
                 data: $('#form_modify_pass').serialize(),
                 success: function(p) {

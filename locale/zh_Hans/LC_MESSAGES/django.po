@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-13 19:21+0800\n"
+"POT-Creation-Date: 2018-08-16 15:24+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,7 +30,7 @@ msgid "Panel"
 msgstr "面板"
 
 #: templates/base.html:96 templates/crontab.html:159 templates/database.html:13
-#: templates/setting.html:87 templates/web.html:13
+#: templates/setting.html:86 templates/website.html:13
 msgid "Home"
 msgstr "首页"
 
@@ -52,7 +51,7 @@ msgstr "数据库"
 msgid "Crontab"
 msgstr "计划任务"
 
-#: templates/base.html:101 templates/setting.html:84 templates/setting.html:86
+#: templates/base.html:101 templates/setting.html:83 templates/setting.html:85
 msgid "Setting"
 msgstr "设置"
 
@@ -129,11 +128,11 @@ msgstr "登录"
 msgid "SIGN IN TO AUTH"
 msgstr "登录验证"
 
-#: templates/login.html:43 templates/register.html:40 templates/setting.html:56
+#: templates/login.html:43 templates/register.html:40 templates/setting.html:55
 msgid "Username"
 msgstr "用户名"
 
-#: templates/login.html:47 templates/register.html:44 templates/setting.html:64
+#: templates/login.html:47 templates/register.html:44 templates/setting.html:63
 msgid "Password"
 msgstr "密码"
 
@@ -157,10 +156,14 @@ msgstr "管理员密码"
 msgid "Old password"
 msgstr "旧密码"
 
-#: templates/setting.html:16 templates/setting.html:33
+#: templates/setting.html:16
 msgid "Please input password"
 msgstr "请输入密码"
 
-#: templates/setting.html:21 templates/setting.html:30
+#: templates/setting.html:21 templates/setting.html:29
 msgid "New password"
 msgstr "新密码"
+
+#: templates/setting.html:24 templates/setting.html:32
+msgid "Please input new password"
+msgstr "请输入新密码"
