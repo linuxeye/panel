@@ -17,7 +17,7 @@ def register(request):
         if request.method == 'POST':
             try:
                 post = json.loads(request.body)
-                User.objects.create_superuser(username=post['username'], email=None, password=post['password'])
+                User.objects.create_superuser(username=post['username'], email=post['email'], password=post['password'])
                 context = {'flag': 'Success'}
             except Exception as e:
                 context = {'flag': 'Error', 'context': str(e)}

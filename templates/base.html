@@ -1,4 +1,5 @@
 {% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,7 +38,6 @@
 
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
-        {% get_current_language as LANGUAGE_CODE %}
         <!-- Main Header -->
         <header class="main-header">
             <!-- Logo -->
@@ -93,8 +93,8 @@
                 <!-- Sidebar Menu -->
                 <ul class="sidebar-menu" data-widget="tree">
                     <!-- Optionally, you can add icons to the links -->
-                    <li id="menu_dashboard"><a href="/home/"><i class="fa fa-dashboard"></i><span>{% trans "Home" %}</span></a></li>
-                    <li id="menu_web"><a href="/website/"><i class="fa fa-globe"></i><span>{% trans "WEB" %}</span></a></li>
+                    <li id="menu_dashboard"><a href="/dashboard/"><i class="fa fa-dashboard"></i><span>{% trans "Dashboard" %}</span></a></li>
+                    <li id="menu_web"><a href="/website/"><i class="fa fa-globe"></i><span>{% trans "Website" %}</span></a></li>
                     <li id="menu_ftp"><a href="/ftp/"><i class="fa fa-download"></i><span>{% trans "FTP" %}</span></a></li>
                     <li id="menu_database"><a href="/database/"><i class="fa fa-database"></i><span>{% trans "Database" %}</span></a></li>
                     <li id="menu_crontab"><a href="/crontab/"><i class="fa fa-tasks"></i><span>{% trans "Crontab" %}</span></a></li>
@@ -139,7 +139,7 @@
                 <a href="https://oneinstack.com" target="_blank">oneinstack.com</a>
             </div>
             <!-- Default to the left -->
-            <strong>Copyright &copy; {% now "Y" %} <a href="#">OneinStack</a>.</strong> All rights reserved.
+            <strong>Copyright &copy; {% now "Y" %} <a href="https://oneinstack.com" target="_blank">OneinStack</a>.</strong> All rights reserved.
         </footer>
 
     </div>

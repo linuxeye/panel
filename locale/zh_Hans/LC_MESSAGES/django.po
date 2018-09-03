@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-16 15:24+0800\n"
+"POT-Creation-Date: 2018-09-03 15:16+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,17 +25,17 @@ msgstr ""
 msgid "Chinese"
 msgstr ""
 
-#: templates/base.html:7 templates/login.html:7 templates/login.html:35
+#: templates/base.html:8 templates/login.html:7 templates/login.html:35
 msgid "Panel"
 msgstr "面板"
 
 #: templates/base.html:96 templates/crontab.html:159 templates/database.html:13
-#: templates/setting.html:86 templates/website.html:13
-msgid "Home"
-msgstr "首页"
+#: templates/website.html:13
+msgid "Dashboard"
+msgstr "仪表盘"
 
 #: templates/base.html:97
-msgid "WEB"
+msgid "Website"
 msgstr "网站"
 
 #: templates/base.html:98
@@ -51,7 +51,7 @@ msgstr "数据库"
 msgid "Crontab"
 msgstr "计划任务"
 
-#: templates/base.html:101 templates/setting.html:83 templates/setting.html:85
+#: templates/base.html:101 templates/setting.html:81
 msgid "Setting"
 msgstr "设置"
 
@@ -72,11 +72,14 @@ msgstr "执行时间"
 msgid "Crontab script"
 msgstr "脚本"
 
-#: templates/crontab.html:40 templates/crontab.html:82
+#: templates/crontab.html:40 templates/crontab.html:82 templates/ftp.html:34
+#: templates/setting.html:34 templates/setting.html:70
 msgid "Close"
 msgstr "关闭"
 
-#: templates/crontab.html:41 templates/crontab.html:83
+#: templates/crontab.html:41 templates/crontab.html:83 templates/ftp.html:35
+#: templates/setting.html:35 templates/setting.html:71
+#: templates/setting.html:114
 msgid "Save"
 msgstr "保存"
 
@@ -128,42 +131,47 @@ msgstr "登录"
 msgid "SIGN IN TO AUTH"
 msgstr "登录验证"
 
-#: templates/login.html:43 templates/register.html:40 templates/setting.html:55
+#: templates/login.html:43 templates/register.html:43 templates/setting.html:53
+#: templates/setting.html:55 templates/setting.html:86
+#: templates/setting.html:89
 msgid "Username"
 msgstr "用户名"
 
-#: templates/login.html:47 templates/register.html:44 templates/setting.html:63
+#: templates/login.html:47 templates/register.html:51 templates/setting.html:17
+#: templates/setting.html:19 templates/setting.html:103
 msgid "Password"
 msgstr "密码"
 
-#: templates/register.html:8 templates/register.html:37
+#: templates/login.html:54
+msgid "Remember Me"
+msgstr ""
+
+#: templates/register.html:8 templates/register.html:40
 msgid "Create super user"
 msgstr "创建超级用户"
 
-#: templates/register.html:48
-msgid "Re-enter password"
+#: templates/register.html:47 templates/setting.html:95
+#: templates/setting.html:98
+msgid "Email"
+msgstr "邮箱"
+
+#: templates/register.html:55 templates/setting.html:23
+#: templates/setting.html:25
+msgid "Confirm Password"
 msgstr "确认密码"
 
-#: templates/register.html:53
+#: templates/register.html:60
 msgid "Register"
 msgstr "注册"
 
-#: templates/setting.html:8
-msgid "Administrator Password"
-msgstr "管理员密码"
+#: templates/setting.html:59 templates/setting.html:61
+msgid "Confirm Username"
+msgstr "确认用户名"
 
-#: templates/setting.html:13
-msgid "Old password"
-msgstr "旧密码"
+#: templates/setting.html:90 templates/setting.html:107
+msgid "Update"
+msgstr "更新"
 
-#: templates/setting.html:16
-msgid "Please input password"
-msgstr "请输入密码"
-
-#: templates/setting.html:21 templates/setting.html:29
-msgid "New password"
-msgstr "新密码"
-
-#: templates/setting.html:24 templates/setting.html:32
+#: templates/setting.html:106
 msgid "Please input new password"
 msgstr "请输入新密码"

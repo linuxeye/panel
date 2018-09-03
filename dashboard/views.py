@@ -12,7 +12,7 @@ def index(request):
         'name': request.user,
         'date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     }
-    return render(request, "home.html", {'user': user})
+    return render(request, "dashboard.html", {'user': user})
 
 @login_required
 def uptime(request):
@@ -33,7 +33,7 @@ def uptime(request):
         uptime = str(err)
     #return uptime
     return JsonResponse(uptime)
-    #return render(request, "home.html", {'uptime': uptime})
+    #return render(request, "dashboard.html", {'uptime': uptime})
 
 def get_ipaddress():
     """

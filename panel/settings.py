@@ -26,7 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'home',
+    'dashboard',
     'website',
     'ftp',
     'database',
@@ -127,7 +127,7 @@ LANGUAGES = [
 ]
 
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/home/'
+LOGIN_REDIRECT_URL = '/dashboard/'
 
 OPTIONS_FILE = '/root/oneinstack/options.conf'
 

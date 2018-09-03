@@ -31,8 +31,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" onclick="change_password_save()">保存</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
+                <button type="button" class="btn btn-primary" onclick="change_password_save()">{% trans "Save" %}</button>
             </div>
         </div>
     </div>
@@ -116,7 +116,7 @@
                         {% for ftp in content %}
                         <tr>
                             <td>{{ ftp.name }}</td>
-                            <td>******</td>
+                            <td>{{ ftp.password|truncatechars:10 }}</td>
                             <td>{{ ftp.path }}</td>
                             <td>
                             {% if ftp.status %}
@@ -159,7 +159,6 @@ $('#page_header').text('FTP')
 $('#page_header_descript').text('总览')
 $('#page_nav').text('FTP')
 $('#page_name').text('首页')
-
 
 function ftp_filter() {
     window.location = '/ftp/?filter=' + $('#input_ftp_filter').val()
