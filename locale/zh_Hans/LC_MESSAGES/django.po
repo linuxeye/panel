@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-03 15:16+0800\n"
+"POT-Creation-Date: 2018-09-06 17:19+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,12 +29,11 @@ msgstr ""
 msgid "Panel"
 msgstr "面板"
 
-#: templates/base.html:96 templates/crontab.html:159 templates/database.html:13
-#: templates/website.html:13
+#: templates/base.html:96 templates/dashboard.html:45
 msgid "Dashboard"
 msgstr "仪表盘"
 
-#: templates/base.html:97
+#: templates/base.html:97 templates/website.html:13
 msgid "Website"
 msgstr "网站"
 
@@ -42,16 +41,15 @@ msgstr "网站"
 msgid "FTP"
 msgstr "FTP"
 
-#: templates/base.html:99
+#: templates/base.html:99 templates/database.html:13
 msgid "Database"
 msgstr "数据库"
 
-#: templates/base.html:100 templates/crontab.html:156
-#: templates/crontab.html:158
+#: templates/base.html:100 templates/crontab.html:155
 msgid "Crontab"
 msgstr "计划任务"
 
-#: templates/base.html:101 templates/setting.html:81
+#: templates/base.html:101 templates/setting.html:81 templates/setting.html:129
 msgid "Setting"
 msgstr "设置"
 
@@ -79,7 +77,7 @@ msgstr "关闭"
 
 #: templates/crontab.html:41 templates/crontab.html:83 templates/ftp.html:35
 #: templates/setting.html:35 templates/setting.html:71
-#: templates/setting.html:114
+#: templates/setting.html:122
 msgid "Save"
 msgstr "保存"
 
@@ -97,7 +95,7 @@ msgstr "搜索"
 
 #: templates/crontab.html:109
 msgid "Script"
-msgstr ""
+msgstr "脚本"
 
 #: templates/crontab.html:110
 msgid "Status"
@@ -132,26 +130,25 @@ msgid "SIGN IN TO AUTH"
 msgstr "登录验证"
 
 #: templates/login.html:43 templates/register.html:43 templates/setting.html:53
-#: templates/setting.html:55 templates/setting.html:86
-#: templates/setting.html:89
+#: templates/setting.html:55 templates/setting.html:97
 msgid "Username"
 msgstr "用户名"
 
 #: templates/login.html:47 templates/register.html:51 templates/setting.html:17
-#: templates/setting.html:19 templates/setting.html:103
+#: templates/setting.html:19
 msgid "Password"
 msgstr "密码"
 
 #: templates/login.html:54
 msgid "Remember Me"
-msgstr ""
+msgstr "记住我"
 
 #: templates/register.html:8 templates/register.html:40
 msgid "Create super user"
 msgstr "创建超级用户"
 
-#: templates/register.html:47 templates/setting.html:95
-#: templates/setting.html:98
+#: templates/register.html:47 templates/setting.html:113
+#: templates/setting.html:116
 msgid "Email"
 msgstr "邮箱"
 
@@ -168,9 +165,21 @@ msgstr "注册"
 msgid "Confirm Username"
 msgstr "确认用户名"
 
-#: templates/setting.html:90 templates/setting.html:107
+#: templates/setting.html:86 templates/setting.html:89
+msgid "Panel Port"
+msgstr "面板端口"
+
+#: templates/setting.html:94
+msgid "Panel Username"
+msgstr "面板用户"
+
+#: templates/setting.html:98 templates/setting.html:107
 msgid "Update"
 msgstr "更新"
+
+#: templates/setting.html:103
+msgid "Panel Password"
+msgstr "面板密码"
 
 #: templates/setting.html:106
 msgid "Please input new password"

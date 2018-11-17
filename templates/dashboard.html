@@ -1,4 +1,6 @@
 {% extends "base.html" %} {% block content %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 <!-- Modal -->
 <div class="row">
     <div class="col-md-12">
@@ -40,7 +42,7 @@
     </div>
 </div>
 <script>
-$('#page_name').text('首页')
+$('#page_nav').text('{% trans "Dashboard" %}')
 
 </script>
 {% endblock %}

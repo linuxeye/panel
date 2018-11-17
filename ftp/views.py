@@ -6,10 +6,12 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
 import os, json, datetime
 from ftp.models import *
+from libs import public
 
 # Create your views here.
 @login_required
 def index(request):
+    setting = json.loads(public.readfile('data/setting.json'))
     filter = request.GET.get('filter', '')
     if filter:
         dataset = User.objects.filter(Q(name__contains=filter)|Q(path__contains=filter)|Q(comment__contains=filter)).order_by("id")
@@ -27,7 +29,7 @@ def index(request):
         'name': request.user,
         'date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     }
-    return render(request, "ftp.html", { "content": content, 'filter' : filter, 'user' : user })
+    return render(request, "ftp.html", { "content": content, 'filter' : filter, "setting": setting, 'user' : user })
 
 @login_required
 def reload(request):

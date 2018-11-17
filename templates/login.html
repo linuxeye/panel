@@ -4,19 +4,19 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>OneinStack{% trans "Panel" %} | {% trans "Login" %}</title>
+  <title>{{ setting.title }}</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
-  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
   <!-- Ionicons -->
-  <link rel="stylesheet" href="https://cdn.bootcss.com/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="https://cdn.bootcss.com/admin-lte/2.4.3/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/admin-lte/2.4.3/css/AdminLTE.min.css">
   <!-- iCheck -->
-  <link rel="stylesheet" href="https://cdn.bootcss.com/iCheck/1.0.2/skins/square/blue.css">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/iCheck/1.0.2/skins/square/blue.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -32,7 +32,7 @@
 <div class="login-box">
   {% get_current_language as LANGUAGE_CODE %}
   <div class="login-logo">
-    <a href="/">OneinStack{% trans "Panel" %}</a>
+    <a href="/">{{ setting.title }}</a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
@@ -67,11 +67,11 @@
 <!-- /.login-box -->
 
 <!-- jQuery 3 -->
-<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/jquery/3.3.1/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
-<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <!-- iCheck -->
-<script src="https://cdn.bootcss.com/iCheck/1.0.2/icheck.min.js"></script>
+<script src="https://cdn.staticfile.org/iCheck/1.0.2/icheck.min.js"></script>
 <script>
   $(function () {
     $('input').iCheck({

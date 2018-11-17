@@ -4,15 +4,17 @@ from datetime import timedelta
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.template import RequestContext
+from libs import public
 
 # Create your views here.
 @login_required
 def index(request):
+    setting = json.loads(public.readfile('data/setting.json'))
     user = {
         'name': request.user,
         'date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     }
-    return render(request, "dashboard.html", {'user': user})
+    return render(request, "dashboard.html", {"setting": setting, 'user': user})
 
 @login_required
 def uptime(request):

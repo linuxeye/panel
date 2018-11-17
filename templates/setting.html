@@ -83,7 +83,23 @@
             <div class="box-body">
                 <form class="form-horizontal" id="form_setting">
                     <div class="form-group">
-                        <label class="col-sm-1 control-label">{% trans "Username" %}</label>
+                        <label class="col-sm-2 control-label">{% trans "Panel Alias" %}</label>
+                        <div class="col-sm-4">
+                            <div id="div_title">
+                                <input name="title" id="input_title" type="text" value="{{ setting.title }}" class="form-control" placeholder="{% trans "Panel Title" %}" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{% trans "Panel Port" %}</label>
+                        <div class="col-sm-4">
+                            <div id="div_port">
+                                <input name="port" id="input_port" type="text" value="{{ content.port }}" class="form-control" placeholder="{% trans "Panel Port" %}" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{% trans "Panel Username" %}</label>
                         <div class="col-sm-4">
                             <div id="div_username" class="form-inline">
                                 <input type="text" name="username" id="input_username" value="{{ content.username }}" class="form-control" placeholder="{% trans "Username" %}" readonly="readonly" >
@@ -92,20 +108,20 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-1 control-label">{% trans "Email" %}</label>
-                        <div class="col-sm-4">
-                            <div id="div_email">
-                                <input name="email" id="input_email" type="email" value="{{ content.email }}" class="form-control" placeholder="{% trans "Email" %}" autocomplete="off">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-1 control-label">{% trans "Password" %}</label>
+                        <label class="col-sm-2 control-label">{% trans "Panel Password" %}</label>
                         <div class="col-sm-4">
                             <div id="div_password" class="form-inline">
                                 <input type="password" class="form-control" name="password" value="********" id="input_password" placeholder="{% trans "Please input new password" %}" readonly="readonly">
 				<button type="button" class="btn btn-success btn-xs" onclick="update_password({{ content.id }},1)">{% trans "Update" %}</button>
 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{% trans "Email" %}</label>
+                        <div class="col-sm-4">
+                            <div id="div_email">
+                                <input name="email" id="input_email" type="email" value="{{ content.email }}" class="form-control" placeholder="{% trans "Email" %}" autocomplete="off">
                             </div>
                         </div>
                     </div>
@@ -118,6 +134,7 @@
     </div>
 </div>
 <script>
+$('#page_nav').text('{% trans "Setting" %}')
 
 function update_password(id,status) {
     if (status == 1) {
@@ -142,7 +159,7 @@ function update_password_save() {
         dataType: 'json',
         success: function(p) {
             if (p.flag == "Success") {
-                top.location = '/setting'
+                top.location = '/setting/'
             } else {
                 alert('保存错误！其他错误：' + p.content)
             }
@@ -176,7 +193,7 @@ function update_username_save() {
         dataType: 'json',
         success: function(p) {
             if (p.flag == "Success") {
-                top.location = '/setting'
+                top.location = '/setting/'
             } else {
                 alert('保存错误！其他错误：' + p.content)
             }
@@ -191,6 +208,8 @@ function update_profile(id,status) {
     if (status == 1) {
         var post = {
             'id': id,
+            'title': $('#input_title').serializeObject()['title'],
+            'port': $('#input_port').serializeObject()['port'],
             'email': $('#input_email').serializeObject()['email']
         }
         jQuery.ajax({
@@ -201,7 +220,7 @@ function update_profile(id,status) {
             dataType: 'json',
             success: function(p) {
                 if (p.flag == "Success") {
-                    top.location = '/setting'
+                    top.location = '/setting/'
                 } else {
                     alert('保存错误！其他错误：' + p.content)
                 }

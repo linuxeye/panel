@@ -5,11 +5,13 @@ from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.conf import settings
 import os, json, datetime, platform
+from libs import public
 from crontab.models import *
 
 # Create your views here.
 @login_required
 def index(request):
+    setting = json.loads(public.readfile('data/setting.json'))
     filter = request.GET.get('filter', '')
     if filter:
         dataset = Crontab.objects.filter(Q(name__contains=filter)|Q(time__contains=filter)|Q(script__contains=filter)).order_by("id")
@@ -27,7 +29,7 @@ def index(request):
         'name': request.user,
         'date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     }
-    return render(request, "crontab.html", { "content": content, 'filter' : filter, 'user' : user })
+    return render(request, "crontab.html", { "content": content, 'filter' : filter, "setting": setting, 'user' : user })
 
 @login_required
 def reload(request):

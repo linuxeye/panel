@@ -2,7 +2,7 @@
 A powerful OneinStack Control Panel
 ## 环境
 Python 3.6</br>
-Django 2.1.1
+Django 2
 ## 一期规划:
 ```
 导航       URL          功能
@@ -15,6 +15,7 @@ FTP        ftp          ftp新增删除修改等
 ```
 ## 安装依赖
 ```
+cd ~/panel
 /usr/local/python/bin/pip install -r requirements.txt
 ```
 ## 初始化数据库
@@ -24,5 +25,6 @@ FTP        ftp          ftp新增删除修改等
 ```
 ## 启动
 ```
-/usr/local/python/bin/python manage.py runserver 0.0.0.0:8000
+cd ~/panel
+/usr/local/python/bin/gunicorn -c runconfig.py panel.wsgi:application
 ```

@@ -8,3 +8,5 @@ class Database(models.Model):
     dbuser = models.CharField(max_length=50, unique=True)
     dbhost = models.CharField(max_length=50)
     dbpassword = models.CharField(max_length=128, blank=True, null=True, default='')
+    addtime = models.DateTimeField(auto_now=True, auto_created=True)
+    comment = models.CharField(max_length=255, blank=True, null=True, default='')
