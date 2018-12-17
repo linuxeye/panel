@@ -5,7 +5,7 @@ import json,datetime
 from panel.settings import OPTIONS
 from database.mysql_manager import MysqlManager
 from libs import public
-from django import forms
+from django.contrib.auth.models import User
 # Create your views here.
 @login_required
 def index(request):
