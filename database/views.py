@@ -5,7 +5,7 @@ import json,datetime
 from panel.settings import OPTIONS
 from database.mysql_manager import MysqlManager
 from libs import public
-
+from django import forms
 # Create your views here.
 @login_required
 def index(request):
@@ -28,20 +28,15 @@ def AddDatabase(request):
     return JsonResponse(content)
 def CreateDatabase(request):
     if request.method == "POST":
-        error = ''
-        success = ''
-        form = bookAddForm(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data['name']
-            success = "True"
-            #b = Book(**form.cleaned_data)
-            #b.save()
-            resp = {
-                'success': success,
-                'error': error
-            }
-            return HttpResponse(json.dumps(resp), content_type="application/json")
-    
+        dbname = request.POST.get('name','')
+        dbuser = request.POST.get('user','')
+        dbpassword = request.POST.get('password','')
+        dbhost = request.POST.get('host','')
+        dbcoment = request.POST.get('comment','')
+        return render(request)
+    else:
+        return HttpResponse(u'有误！')
+        
 def Delatabase(request):
     dbManager = MysqlManager("mysql", 'root', eval(OPTIONS['dbrootpwd']))
 
