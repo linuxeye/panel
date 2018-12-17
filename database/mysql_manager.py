@@ -192,3 +192,13 @@ class MysqlManager(object):
             return data
         except Exception as e:
             return e
+    def create(self,sql):
+        #创建数据库
+        self._connect_db()
+        try:
+           result = self.__cursor.execute(sql)
+           self.__connect.commit()
+           self._close_db()
+           return result
+        except Exception as e:
+           return e

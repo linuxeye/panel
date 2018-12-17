@@ -62,18 +62,26 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">* 密码</label>
+                                    <label class="col-sm-3 control-label">* 数据库密码</label>
                                     <div class="col-sm-7" id="div_password">
-                                        <input type="password" class="form-control" name="password" id="input_dbpassword" placeholder="数据库密码">
+                                        <input type="password" class="form-control" name="dbpassword" id="input_dbpassword" placeholder="数据库密码">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">* 访问权限</label>
-                                      <select class="col-sm-7" id="div_dbhost" style="width: 35%;">
+                                    <div class="col-sm-7" >
+                                      <select class="form-control" name="dbhost" id="input_dbhost" >
                                         <option selected="selected">localhost</option>
                                         <option>%</option>
                                         <option>指定IP</option>
                                       </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">* 备注</label>
+                                    <div class="col-sm-7" id="div_dbcomment">
+                                        <input type="text" class="form-control" name="dbcomment" id="input_dbcomment" placeholder="详细备注">
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -240,20 +248,23 @@ function sync_database(sync_status) {
 function create_database(create) {
     if (create == 1) {
         $('#input_dbname').val('')
+        $('#input_dbuser').val('')
         $('#input_dbpassword').val('')
         $('#input_dbhost').val('')
-        $('#input_database_comment').val('')
+        $('#input_dbcomment').val('')
         $('#create_database').modal('show')
     }
 }
 
 function save_database() {
     var post = {
-        'name': $('#input_dbname').serializeObject()['name'],
-        'password': $('#input_dbpassword').serializeObject()['password'],
-        'path': $('#input_dbhost').serializeObject()['path'],
-        'comment': $('#input_database_comment').serializeObject()['comment']
+        'name': $('#input_dbname').serializeObject()['dbname'],
+        'user': $('#input_dbuser').serializeObject()['dbuser'],
+        'password': $('#input_dbpassword').serializeObject()['dbpassword'],
+        'host': $('#input_dbhost').serializeObject()['dbhost'],
+        'comment': $('#input_dbcomment').serializeObject()['dbcomment']
     }
+    console.log(post)
     jQuery.ajax({
         type: 'post',
         url: '/database/create',
