@@ -34,10 +34,13 @@ def CreateDatabase(request):
         dbhost = request.POST.get('host','')
         dbcoment = request.POST.get('comment','')
         try:
-            post = json.loads(request.body)
-            #dbuser_create = User(name = post['name'], user=post['user'], password = post['password'], host=post['host'], comment=post['comment'])
-            #dbuser_create.save()
-            content = { 'flag': 'Success' }
+            dbManager = MysqlManager("mysql", 'root', eval(OPTIONS['dbrootpwd']))
+            createsql = 'CREATE DATABASE %s CHARACTER SET utf8' % dbname
+            result = dbManager.create(createsql)
+            if result:
+                content = { 'flag': 'Success' }
+            else:
+                content = {'flag': 'create failed'}
         except Exception as e:
             content = { 'flag': 'Error', 'content': str(e) }
         return JsonResponse(content)
