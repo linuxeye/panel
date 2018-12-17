@@ -46,7 +46,9 @@ def CreateDatabase(request):
                 content = {'flag': 'create failed'}
         except Exception as e:
             content = { 'flag': 'Error', 'content': str(e) }
-        return JsonResponse(content)
+        #return JsonResponse(content)
+        output = {'data': dbname}
+        return render(request,'test.html',output)
     else:
         return HttpResponse(u'有误！')
 
