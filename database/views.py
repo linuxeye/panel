@@ -33,10 +33,11 @@ def CreateDatabase(request):
         dbpassword = request.POST.get('password','')
         dbhost = request.POST.get('host','')
         dbcoment = request.POST.get('comment','')
-        return render(request)
+        context = 'dbname is %s' % dbname
+        return HttpResponse(context)
     else:
         return HttpResponse(u'有误！')
-        
+
 def Delatabase(request):
     dbManager = MysqlManager("mysql", 'root', eval(OPTIONS['dbrootpwd']))
 
