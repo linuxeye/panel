@@ -29,14 +29,15 @@ def AddDatabase(request):
 def CreateDatabase(request):
     if request.method == "POST":
         post = json.loads(request.body)
-        dbname = request.POST.get('name','')
+        dbname = post['name']
+        #dbname = request.POST.get('name','')
         dbuser = request.POST.get('user','')
         dbpassword = request.POST.get('password','')
         dbhost = request.POST.get('host','')
         dbcoment = request.POST.get('comment','')
         try:
             dbManager = MysqlManager("mysql", 'root', eval(OPTIONS['dbrootpwd']))
-            createsql = 'CREATE DATABASE' + post['name'] + 'CHARACTER SET utf8'
+            createsql = 'CREATE DATABASE' + dbname + 'CHARACTER SET utf8'
             #createsql = 'CREATE DATABASE test CHARACTER SET utf8'
             result = dbManager.create(createsql)
             if result:
