@@ -35,8 +35,8 @@ def CreateDatabase(request):
         dbcoment = request.POST.get('comment','')
         try:
             post = json.loads(request.body)
-            dbuser_create = User(name = post['name'], user=post['user'], password = post['password'], host=post['host'], comment=post['comment'])
-            dbuser_create.save()
+            #dbuser_create = User(name = post['name'], user=post['user'], password = post['password'], host=post['host'], comment=post['comment'])
+            #dbuser_create.save()
             content = { 'flag': 'Success' }
         except Exception as e:
             content = { 'flag': 'Error', 'content': str(e) }
