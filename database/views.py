@@ -26,5 +26,9 @@ def AddDatabase(request):
     else:
          content = { 'Error': 'test'}
     return JsonResponse(content)
+def CreateDatabase(request):
+    post = json.loads(request.body)
+    return JsonResponse(post)
+
 def Delatabase(request):
     dbManager = MysqlManager("mysql", 'root', eval(OPTIONS['dbrootpwd']))
