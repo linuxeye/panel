@@ -33,8 +33,14 @@ def CreateDatabase(request):
         dbpassword = request.POST.get('password','')
         dbhost = request.POST.get('host','')
         dbcoment = request.POST.get('comment','')
-        context = 'dbname is %s' % dbname
-        return HttpResponse(context)
+        try:
+            post = json.loads(request.body)
+            dbuser_create = User(name = post['name'], user=post['user'], password = post['password'], host=post['host'], comment=post['comment'])
+            ftpuser_create.save()
+            content = { 'flag': 'Success' }
+        except Exception as e:
+            content = { 'flag': 'Error', 'content': str(e) }
+        return JsonResponse(content)
     else:
         return HttpResponse(u'有误！')
 
