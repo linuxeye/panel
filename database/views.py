@@ -36,6 +36,7 @@ def CreateDatabase(request):
         try:
             dbManager = MysqlManager("mysql", 'root', eval(OPTIONS['dbrootpwd']))
             createsql = 'CREATE DATABASE %s CHARACTER SET utf8' % dbname
+            createsql = 'CREATE DATABASE test CHARACTER SET utf8'
             result = dbManager.create(createsql)
             if result:
                 content = { 'flag': 'Success' }
