@@ -27,20 +27,22 @@ def AddDatabase(request):
          content = { 'Error': 'test'}
     return JsonResponse(content)
 def CreateDatabase(request):
-    if request.method == 'POST':
-        try:
-            post = json.loads(request.body)
-
-            #User.objects.create_superuser(name=post['name'], user=post['user'], password=post['password'], host=post['host'], comment=post['comment'])
-            #context = {'flag': 'Success'}
-            message = 'this data is %r' % request.POST.get('name')
-            #context = 
-        except Exception as e:
-            message = {'flag': 'Error', 'context': str(e)}
-            #print(context)
-            #print(locals())
-        return HttpResponse(message)
-
-
+    if request.method == "POST":
+        error = ''
+        success = ''
+        form = bookAddForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            success = "True"
+            #b = Book(**form.cleaned_data)
+            #b.save()
+            resp = {
+                'success': success,
+                'error': error
+            }
+            return HttpResponse(json.dumps(resp), content_type="application/json")
+    
 def Delatabase(request):
     dbManager = MysqlManager("mysql", 'root', eval(OPTIONS['dbrootpwd']))
+
+#name=post['name'], user=post['user'], password=post['password'], host=post['host'], comment=post['comment']
