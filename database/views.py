@@ -5,6 +5,8 @@ import json,datetime
 from panel.settings import OPTIONS
 from database.mysql_manager import MysqlManager
 from libs import public
+from database.models import *
+
 # Create your views here.
 @login_required
 def index(request):
@@ -33,6 +35,7 @@ def CreateDatabase(request):
         dbpassword = post['password']
         dbhost = post['host']
         dbcoment = post['comment']
+        dbuser_create = Database(dbname = post['name'], dbuser = post['user'], dbpassword = post['password'], dbhost = post['host'], dbcomment = post['comment'])
         dbManager = MysqlManager("mysql", 'root', eval(OPTIONS['dbrootpwd']))
         data = dbManager.query("show databases;")
         if dbname not in data:
@@ -41,11 +44,12 @@ def CreateDatabase(request):
                 createsql = 'CREATE DATABASE' + ' ' + 'IF NOT EXISTS' + ' ' + dbname + ' ' + 'CHARACTER SET utf8'
                 dbManager.create(createsql)
                 result = dbname + '数据库创建成功！'
-                content = { 'flag': 'Success', 'comm': result}
+                content = { 'flag': 'Success', 'content': result}
             except Exception as e:
                 content = { 'flag': 'Error', 'content': str(e) }
         else:
             content = {'flag': 'Error', 'content': '该库已经存在！'}
+        dbuser_create.save()
         return JsonResponse(content)
     else:
         return HttpResponse(u'有误！')
