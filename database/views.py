@@ -5,7 +5,6 @@ import json,datetime
 from panel.settings import OPTIONS
 from database.mysql_manager import MysqlManager
 from libs import public
-from django.contrib.auth.models import User
 # Create your views here.
 @login_required
 def index(request):
@@ -20,9 +19,9 @@ def index(request):
 def AddDatabase(request):
     dbManager = MysqlManager("mysql", 'root', eval(OPTIONS['dbrootpwd']))
     result = dbManager.query("show databases;")
-    print(result)
+    #print(result)
     if result:
-         content = { 'flag': 'Success' }
+         content = { 'flag': 'Success', 'com': result }
     else:
          content = { 'Error': 'test'}
     return JsonResponse(content)
@@ -30,30 +29,27 @@ def CreateDatabase(request):
     if request.method == "POST":
         post = json.loads(request.body)
         dbname = post['name']
-        #dbname = request.POST.get('name','')
-        dbuser = request.POST.get('user','')
-        dbpassword = request.POST.get('password','')
-        dbhost = request.POST.get('host','')
-        dbcoment = request.POST.get('comment','')
-        try:
-            dbManager = MysqlManager("mysql", 'root', eval(OPTIONS['dbrootpwd']))
-            createsql = 'CREATE DATABASE' + ' ' + 'IF NOT EXISTS' + ' ' + dbname + ' ' + 'CHARACTER SET utf8'
-            #createsql = 'CREATE DATABASE test CHARACTER SET utf8'
-            result = dbManager.create(createsql)
-            content = { 'flag': 'Success', 'comm': str(createsql), 'res': str(result) }
-            #if result:
-            #    content = { 'flag': 'Success', 'comm': str(createsql), 'res': str(result) }
-            #else:
-            #    content = {'flag': 'create failed'}
-        except Exception as e:
-            content = { 'flag': 'Error', 'content': str(e) }
+        dbuser = post['user']
+        dbpassword = post['password']
+        dbhost = post['host']
+        dbcoment = post['comment']
+        dbManager = MysqlManager("mysql", 'root', eval(OPTIONS['dbrootpwd']))
+        data = dbManager.query("show databases;")
+        if dbname not in data:
+            try:
+                dbManager = MysqlManager("mysql", 'root', eval(OPTIONS['dbrootpwd']))
+                createsql = 'CREATE DATABASE' + ' ' + 'IF NOT EXISTS' + ' ' + dbname + ' ' + 'CHARACTER SET utf8'
+                dbManager.create(createsql)
+                result = dbname + '数据库创建成功！'
+                content = { 'flag': 'Success', 'comm': result}
+            except Exception as e:
+                content = { 'flag': 'Error', 'content': str(e) }
+        else:
+            content = {'flag': 'Error', 'content': '该库已经存在！'}
         return JsonResponse(content)
-        #output = {'data': dbname}
-        #return render(request,'test.html',output)
     else:
         return HttpResponse(u'有误！')
 
 def Delatabase(request):
     dbManager = MysqlManager("mysql", 'root', eval(OPTIONS['dbrootpwd']))
 
-#name=post['name'], user=post['user'], password=post['password'], host=post['host'], comment=post['comment']
