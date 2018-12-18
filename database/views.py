@@ -35,7 +35,7 @@ def CreateDatabase(request):
         dbpassword = post['password']
         dbhost = post['host']
         dbcoment = post['comment']
-        dbuser_create = Database(dbname = post['name'], dbuser = post['user'], dbpassword = post['password'], dbhost = post['host'], dbcomment = post['comment'])
+        dbuser_create = Database(dbname = post['name'], dbuser = post['user'], dbpassword = post['password'], dbhost = post['host'], comment = post['comment'])
         dbManager = MysqlManager("mysql", 'root', eval(OPTIONS['dbrootpwd']))
         data = dbManager.query("show databases;")
         if dbname not in data:
