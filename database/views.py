@@ -37,18 +37,19 @@ def CreateDatabase(request):
         dbcoment = request.POST.get('comment','')
         try:
             dbManager = MysqlManager("mysql", 'root', eval(OPTIONS['dbrootpwd']))
-            createsql = 'CREATE DATABASE' + dbname + 'CHARACTER SET utf8'
+            createsql = 'CREATE DATABASE' + ' ' + 'IF NOT EXISTS' + ' ' + dbname + ' ' + 'CHARACTER SET utf8'
             #createsql = 'CREATE DATABASE test CHARACTER SET utf8'
             result = dbManager.create(createsql)
-            if result:
-                content = { 'flag': 'Success' }
-            else:
-                content = {'flag': 'create failed'}
+            content = { 'flag': 'Success', 'comm': str(createsql), 'res': str(result) }
+            #if result:
+            #    content = { 'flag': 'Success', 'comm': str(createsql), 'res': str(result) }
+            #else:
+            #    content = {'flag': 'create failed'}
         except Exception as e:
             content = { 'flag': 'Error', 'content': str(e) }
-        #return JsonResponse(content)
-        output = {'data': dbname}
-        return render(request,'test.html',output)
+        return JsonResponse(content)
+        #output = {'data': dbname}
+        #return render(request,'test.html',output)
     else:
         return HttpResponse(u'有误！')
 
