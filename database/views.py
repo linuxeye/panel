@@ -35,21 +35,23 @@ def CreateDatabase(request):
         dbpassword = post['password']
         dbhost = post['host']
         dbcoment = post['comment']
-        dbuser_create = Database(dbname = post['name'], dbuser = post['user'], dbpassword = post['password'], dbhost = post['host'], comment = post['comment'])
+        #dbuser_create = Database(dbname = post['name'], dbuser = post['user'], dbpassword = post['password'], dbhost = post['host'], comment = post['comment'])
         dbManager = MysqlManager("mysql", 'root', eval(OPTIONS['dbrootpwd']))
         data = dbManager.query("show databases;")
         if dbname not in data:
             try:
                 dbManager = MysqlManager("mysql", 'root', eval(OPTIONS['dbrootpwd']))
-                createsql = 'CREATE DATABASE' + ' ' + 'IF NOT EXISTS' + ' ' + dbname + ' ' + 'CHARACTER SET utf8'
-                dbManager.create(createsql)
+                create_database_sql = "CREATE DATABASE IF NOT EXISTS %s CHARACTER SET utf8;" % (dbname) 
+                create_user_sql = "CREATE USER %s@%s IDENTIFIED BY '%s';" % (dbuser,dbhost,dbpassword) 
+                dbManager.execute(create_database_sql)
+                dbManager.execute(create_user_sql)
                 result = dbname + '数据库创建成功！'
-                content = { 'flag': 'Success', 'content': result}
+                content = { 'flag': 'Success', 'content': create_user_sql}
             except Exception as e:
                 content = { 'flag': 'Error', 'content': str(e) }
         else:
             content = {'flag': 'Error', 'content': '该库已经存在！'}
-        dbuser_create.save()
+        #dbuser_create.save()
         return JsonResponse(content)
     else:
         return HttpResponse(u'有误！')
