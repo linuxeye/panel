@@ -52,8 +52,12 @@ def CreateDatabase(request):
                     dbManager = MysqlManager("mysql", 'root', eval(OPTIONS['dbrootpwd']))
                     create_database_sql = "CREATE DATABASE IF NOT EXISTS %s CHARACTER SET utf8;" % (dbname)
                     create_user_sql = "CREATE USER %s@%s IDENTIFIED BY '%s';" % (dbuser,dbhost,dbpassword)
+                    grant_user_sql = "GRANT ALL PRIVILEGES ON %s.* TO %s@'%s'" % (dbname,dbuser,dbhost)
                     dbManager.execute(create_database_sql)
                     dbManager.execute(create_user_sql)
+                    dbManager.execute(grant_user_sql)
+                    
+
                     result = dbname + '创建和赋权成功！'
                     content = { 'flag': 'Success', 'content': result}
                     dbuser_create.save()
