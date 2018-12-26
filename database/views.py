@@ -11,11 +11,16 @@ from database.models import *
 @login_required
 def index(request):
     setting = json.loads(public.readfile('data/setting.json'))
-    user = {
-        'name': request.user,
-        'date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    databases = Database.objects.all()
+    content = {
+        'databases': databases
     }
-    return render(request, "database.html", {"setting": setting, 'user': user})
+    return render(request, "database.html", content)
+    #user = {
+    #    'name': request.user,
+    #    'date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    #}
+    #return render(request, "database.html", {"setting": setting, 'user': user})
 
 @login_required
 def AddDatabase(request):

@@ -114,6 +114,7 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
+                            <th>数据库名</th>
                             <th>用户名</th>
                             <th>密码</th>
                             <th>根目录</th>
@@ -123,11 +124,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for database in content %}
+                        {% for database in databases %}
                         <tr>
-                            <td>{{ database.name }}</td>
-                            <td>{{ database.password|truncatechars:10 }}</td>
-                            <td>{{ database.path }}</td>
+                            <td>{{ database.dbname }}</td>
+                            <td>{{ database.dbuser }}</td>
+                            <td>{{ database.dbpassword|truncatechars:10 }}</td>
+                            <td>{{ database.dbhost }}</td>
                             <td>
                             {% if database.status %}
                                 <button type="button" class="btn btn-success btn-xs" onclick="change_status({{ database.id }},0)">已启用</button>
@@ -159,7 +161,6 @@
                         <span>第 {{ content.number }} 页 - 共 {{ content.paginator.num_pages }} 页</span>
                     </li>
                 </ul>
-                <button type="button" class="btn btn-primary pull-left" onclick="sync_database(1)">同步数据库</button>
             </div>
         </div>
     </div>
