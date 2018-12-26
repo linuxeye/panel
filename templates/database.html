@@ -70,11 +70,17 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">* 访问权限</label>
                                     <div class="col-sm-7" >
-                                      <select class="form-control" name="dbhost" id="input_dbhost" >
-                                        <option selected="selected">localhost</option>
-                                        <option>%</option>
-                                        <option>指定IP</option>
+                                      <select class="form-control" name="dbhost" id="input_dbhost" onchange="showinfo(this[selectedIndex].value)">
+                                        <option value="1">localhost</option>
+                                        <option value="2">%</option>
+                                        <option value="3">指定IP</option>
                                       </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="ip">
+                                    <label class="col-sm-3 control-label">* IP</label>
+                                    <div class="col-sm-7" >
+                                        <input type="text" class="form-control" name="dbhost" id="input_dbhost" placeholder="指定IP">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -170,6 +176,18 @@ $('#page_nav').text('数据库')
 
 function database_filter() {
     window.location = '/database/?filter=' + $('#input_database_filter').val()
+}
+
+function showinfo(values){
+    if (values==1){
+       $("#ip").css("display","none");
+       }
+    if (values==2){
+       $("#ip").css("display","none");
+       }
+    if (values==3){
+       $("#ip").css("display","block");
+       }
 }
 
 function delete_database(id, name) {
