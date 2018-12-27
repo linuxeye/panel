@@ -275,7 +275,7 @@ function create_database(create) {
 
 function save_database() {
     var values = $('#select_dbhost').val();
-    if (values == 0) {
+    if (values == 'IP') {
         var post = {
             'name': $('#input_dbname').serializeObject()['dbname'],
             'user': $('#input_dbuser').serializeObject()['dbuser'],
