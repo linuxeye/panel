@@ -70,14 +70,14 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">* 访问权限</label>
                                     <div class="col-sm-7" >
-                                      <select class="form-control" name="dbhost" id="input_dbhost" onchange="showinfo(this[selectedIndex].value)">
-                                        <option value="localhost">localhost</option>
+                                      <select class="form-control" name="dbhost" id="select_dbhost" onchange="showinfo(this[selectedIndex].value)">
+                                        <option value="localhost" selected>localhost</option>
                                         <option value="%">%</option>
                                         <option value="IP">指定IP</option>
                                       </select>
                                     </div>
                                 </div>
-                                <div class="form-group" id="ip">
+                                <div class="form-group" id="ip" style="display:none" >
                                     <label class="col-sm-3 control-label">* IP</label>
                                     <div class="col-sm-7" >
                                         <input type="text" class="form-control" name="dbhost" id="input_dbhost" placeholder="指定IP">
@@ -179,13 +179,16 @@ function database_filter() {
 }
 
 function showinfo(values){
-    if (values==localhost){
+    if (values==''){
        $("#ip").css("display","none");
        }
-    if (values==%){
+    if (values=='localhost'){
        $("#ip").css("display","none");
        }
-    if (values==IP){
+    if (values=='%'){
+       $("#ip").css("display","none");
+       }
+    if (values=='IP'){
        $("#ip").css("display","block");
        }
 }
@@ -266,22 +269,28 @@ function sync_database(sync_status) {
 
 function create_database(create) {
     if (create == 1) {
-        $('#input_dbname').val('')
-        $('#input_dbuser').val('')
-        $('#input_dbpassword').val('')
-        $('#input_dbhost').val('')
-        $('#input_dbcomment').val('')
         $('#create_database').modal('show')
     }
 }
 
 function save_database() {
-    var post = {
-        'name': $('#input_dbname').serializeObject()['dbname'],
-        'user': $('#input_dbuser').serializeObject()['dbuser'],
-        'password': $('#input_dbpassword').serializeObject()['dbpassword'],
-        'host': $('#input_dbhost').serializeObject()['dbhost'],
-        'comment': $('#input_dbcomment').serializeObject()['dbcomment']
+    var values = $('#select_dbhost').val();
+    if (values == 0) {
+        var post = {
+            'name': $('#input_dbname').serializeObject()['dbname'],
+            'user': $('#input_dbuser').serializeObject()['dbuser'],
+            'password': $('#input_dbpassword').serializeObject()['dbpassword'],
+            'host': $('#input_dbhost').serializeObject()['dbhost'],
+            'comment': $('#input_dbcomment').serializeObject()['dbcomment']
+        }
+    } else {
+        var post = {
+            'name': $('#input_dbname').serializeObject()['dbname'],
+            'user': $('#input_dbuser').serializeObject()['dbuser'],
+            'password': $('#input_dbpassword').serializeObject()['dbpassword'],
+            'host': $('#select_dbhost').serializeObject()['dbhost'],
+            'comment': $('#input_dbcomment').serializeObject()['dbcomment']
+        }
     }
     console.log(post)
     jQuery.ajax({
