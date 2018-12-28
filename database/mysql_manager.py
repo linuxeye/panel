@@ -187,7 +187,8 @@ class MysqlManager(object):
             self.__cursor.execute(sql)
             result = self.__cursor.fetchall()
             #将元组转换成列表
-            data = map(list,result)
+            data = [result[i][0] for i in range(len(result))]
+            #data = map(list,result)
             self._close_db()
             return data
         except Exception as e:
