@@ -115,68 +115,137 @@
                     </div>
                 </div>
             </div>
-            <!-- /.box-header -->
-            <div class="box-body no-padding">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>数据库名</th>
-                            <th>用户名</th>
-                            <th>密码</th>
-                            <th>根目录</th>
-                            <th>状态</th>
-                            <th>备注</th>
-                            <th>操作</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for database in databases %}
-                        <tr>
-                            <td>{{ database.dbname }}</td>
-                            <td>{{ database.dbuser }}</td>
-                            <td>{{ database.dbpassword|truncatechars:10 }}</td>
-                            <td>{{ database.dbhost }}</td>
-                            <td>
-                            {% if database.status %}
-                                <button type="button" class="btn btn-success btn-xs" onclick="change_status({{ database.id }},0)">已启用</button>
-                            {% else %}
-                                <button type="button" class="btn btn-danger btn-xs" onclick="change_status({{ database.id }},1)">已停用</button>
-                            {% endif %}
-                            </td>
-                            <td>{{ database.comment }}</td>
-                            <td><button type="button" class="btn btn-success btn-xs" onclick="change_password({{ database.id }},'{{ database.name }}',1)">改密</button>
-                            <button type="button" class="btn btn-danger btn-xs" onclick="delete_database({{ database.id }},'{{ database.name }}')">删除</button></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer clearfix">
-                <ul class="pagination pagination-sm no-margin pull-right">
-                    {% if content.has_previous %}
-                    <li><a href="?page={{ content.previous_page_number }}&filter={{ filter }}" class="prev">{{ previous_link_decorator|safe }}上一页</a></li>
-                    {% else %}
-                    <li class="paginate_button previous disabled"><span class="disabled prev">{{ previous_link_decorator|safe }}上一页</span></li>
-                    {% endif %} {% if content.has_next %}
-                    <li><a href="?page={{ content.next_page_number }}&filter={{ filter }}" class="next">下一页{{ next_link_decorator|safe }}</a></li>
-                    {% else %}
-                    <li class="paginate_button next disabled"><span class="disabled next">下一页{{ next_link_decorator|safe }}</span></li>
-                    {% endif %}
-                    <li class="paginate_button previous disabled">
-                        <span>第 {{ content.number }} 页 - 共 {{ content.paginator.num_pages }} 页</span>
-                    </li>
-                </ul>
-            </div>
         </div>
     </div>
 </div>
+<!-- /.box-header -->
+<div id="pageone">
+    <div id="divuser" style="background-color:#3c8dbc; height:60px;">
+        <p>用户信息</p>     
+    </div> 
+    <div id="divuserinfo" class="box-body no-padding" style="display: none;">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>数据库名</th>
+                    <th>用户名</th>
+                    <th>密码</th>
+                    <th>根目录</th>
+                    <th>状态</th>
+                    <th>备注</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for database in databases %}
+                <tr>
+                    <td>{{ database.dbname }}</td>
+                    <td>{{ database.dbuser }}</td>
+                    <td>{{ database.dbpassword|truncatechars:10 }}</td>
+                    <td>{{ database.dbhost }}</td>
+                    <td>
+                    {% if database.status %}
+                        <button type="button" class="btn btn-success btn-xs" onclick="change_status({{ database.id }},0)">已启用</button>
+                    {% else %}
+                        <button type="button" class="btn btn-danger btn-xs" onclick="change_status({{ database.id }},1)">已停用</button>
+                    {% endif %}
+                    </td>
+                    <td>{{ database.comment }}</td>
+                    <td>
+                        <button type="button" class="btn btn-success btn-xs" onclick="change_password({{ database.id }},'{{ database.name }}',1)">改密</button>
+                        <button type="button" class="btn btn-danger btn-xs" onclick="delete_database({{ database.id }},'{{ database.name }}')">删除</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div> 
+
+<div id="pageone">
+    <div id="divdb" style="height:60px;">
+        <p>数据库信息</p>
+    </div>
+    <div id="divdbinfo" class="box-body no-padding" style="display: none;">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>数据库名</th>
+                    <th>用户名</th>
+                    <th>密码</th>
+                    <th>根目录</th>
+                    <th>状态</th>
+                    <th>备注</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for database in databases %}
+                <tr>
+                    <td>{{ database.dbname }}</td>
+                    <td>{{ database.dbuser }}</td>
+                    <td>{{ database.dbpassword|truncatechars:10 }}</td>
+                    <td>{{ database.dbhost }}</td>
+                    <td>
+                    {% if database.status %}
+                        <button type="button" class="btn btn-success btn-xs" onclick="change_status({{ database.id }},0)">已启用</button>
+                    {% else %}
+                        <button type="button" class="btn btn-danger btn-xs" onclick="change_status({{ database.id }},1)">已停用</button>
+                    {% endif %}
+                    </td>
+                    <td>{{ database.comment }}</td>
+                    <td>
+                        <button type="button" class="btn btn-success btn-xs" onclick="change_password({{ database.id }},'{{ database.name }}',1)">改密</button>
+                        <button type="button" class="btn btn-danger btn-xs" onclick="delete_database({{ database.id }},'{{ database.name }}')">删除</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- /.box-body -->
+<div class="box-footer clearfix">
+    <ul class="pagination pagination-sm no-margin pull-right">
+        {% if content.has_previous %}
+        <li><a href="?page={{ content.previous_page_number }}&filter={{ filter }}" class="prev">{{ previous_link_decorator|safe }}上一页</a></li>
+        {% else %}
+        <li class="paginate_button previous disabled"><span class="disabled prev">{{ previous_link_decorator|safe }}上一页</span></li>
+        {% endif %} {% if content.has_next %}
+        <li><a href="?page={{ content.next_page_number }}&filter={{ filter }}" class="next">下一页{{ next_link_decorator|safe }}</a></li>
+        {% else %}
+        <li class="paginate_button next disabled"><span class="disabled next">下一页{{ next_link_decorator|safe }}</span></li>
+        {% endif %}
+        <li class="paginate_button previous disabled">
+            <span>第 {{ content.number }} 页 - 共 {{ content.paginator.num_pages }} 页</span>
+        </li>
+    </ul>
+</div>
+
+
 <script>
 $('#page_nav').text('数据库')
 
 function database_filter() {
     window.location = '/database/?filter=' + $('#input_database_filter').val()
 }
+
+$('#divdb').click(function(){//点击a标签  
+    if ($('#divdbinfo').css("display")=="none"){//如果当前隐藏  
+        $('#divdbinfo').show(100);//那么就显示div  
+    }else{ 
+        $('#divdbinfo').hide(100);//就隐藏div  
+    }  
+})
+
+$('#divuser').click(function(){//点击a标签  
+    if ($('#divuserinfo').css("display")=="none"){//如果当前隐藏  
+        $('#divuserinfo').show(100);//那么就显示div  
+    }else{ 
+        $('#divuserinfo').hide(100);//就隐藏div  
+    }  
+})
 
 function showinfo(values){
     if (values==''){
