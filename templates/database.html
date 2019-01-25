@@ -102,11 +102,70 @@
     </div>
 </div>
 
+<div class="modal fade" id="create_user" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" style="width: 500px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="nav-tabs-custom">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab_create_user">
+                            <form class="form-horizontal" id="form_create_user">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">* 用户名</label>
+                                    <div class="col-sm-7" id="div_dbuser">
+                                        <input type="text" class="form-control" name="dbuser" id="input_dbuser" placeholder="用户名">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">* 用户密码</label>
+                                    <div class="col-sm-7" id="div_password">
+                                        <input type="password" class="form-control" name="dbpassword" id="input_dbpassword" placeholder="用户密码">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">* 访问权限</label>
+                                    <div class="col-sm-7" >
+                                      <select class="form-control" name="dbhost" id="select_dbhost" onchange="showinfo(this[selectedIndex].value)">
+                                        <option value="localhost" selected>localhost</option>
+                                        <option value="%">%</option>
+                                        <option value="IP">指定IP</option>
+                                      </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="ip" style="display:none" >
+                                    <label class="col-sm-3 control-label">* IP</label>
+                                    <div class="col-sm-7" >
+                                        <input type="text" class="form-control" name="dbhost" id="input_dbhost" placeholder="指定IP">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">* 备注</label>
+                                    <div class="col-sm-7" id="div_dbcomment">
+                                        <input type="text" class="form-control" name="dbcomment" id="input_dbcomment" placeholder="详细备注">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="save_user()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-md-12">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <button type="button" class="btn btn-primary pull-left" onclick="create_database(1)">创建数据库</button>
+                <button type="button" class="btn btn-primary pull-left" onclick="create_user(1)">创建用户</button>
+                <button type="button" class="btn btn-primary pull-left" onclick="create_database(1)">创建数据库</button>               
                 <button type="button" class="btn btn-primary pull-left" onclick="sync_database(1)">同步数据库账号</button>
                 <div class="input-group pull-right" style="width: 250px;">
                     <input type="text" name="database_filter" id="input_database_filter" class="form-control pull-right" placeholder="搜索" onkeydown='if(event.keyCode==13){database_filter()}'>
@@ -127,11 +186,9 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>数据库名</th>
                     <th>用户名</th>
                     <th>密码</th>
-                    <th>根目录</th>
-                    <th>状态</th>
+                    <th>访问主机</th>
                     <th>备注</th>
                     <th>操作</th>
                 </tr>
@@ -139,21 +196,14 @@
             <tbody>
                 {% for database in databases %}
                 <tr>
-                    <td>{{ database.dbname }}</td>
                     <td>{{ database.dbuser }}</td>
                     <td>{{ database.dbpassword|truncatechars:10 }}</td>
                     <td>{{ database.dbhost }}</td>
+                    <td>{{ database.dbcomment }}</td>
                     <td>
-                    {% if database.status %}
-                        <button type="button" class="btn btn-success btn-xs" onclick="change_status({{ database.id }},0)">已启用</button>
-                    {% else %}
-                        <button type="button" class="btn btn-danger btn-xs" onclick="change_status({{ database.id }},1)">已停用</button>
-                    {% endif %}
-                    </td>
-                    <td>{{ database.comment }}</td>
-                    <td>
+                        <button type="button" class="btn btn-success btn-xs" onclick="grant_user({{ database.id }},'{{ database.name }}',1)">赋权</button>
                         <button type="button" class="btn btn-success btn-xs" onclick="change_password({{ database.id }},'{{ database.name }}',1)">改密</button>
-                        <button type="button" class="btn btn-danger btn-xs" onclick="delete_database({{ database.id }},'{{ database.name }}')">删除</button>
+                        <button type="button" class="btn btn-danger btn-xs" onclick="delete_user({{ database.id }},'{{ database.name }}')">删除</button>
                     </td>
                 </tr>
                 {% endfor %}
@@ -171,10 +221,7 @@
             <thead>
                 <tr>
                     <th>数据库名</th>
-                    <th>用户名</th>
-                    <th>密码</th>
-                    <th>根目录</th>
-                    <th>状态</th>
+                    <th>服务地址</th>
                     <th>备注</th>
                     <th>操作</th>
                 </tr>
@@ -183,19 +230,9 @@
                 {% for database in databases %}
                 <tr>
                     <td>{{ database.dbname }}</td>
-                    <td>{{ database.dbuser }}</td>
-                    <td>{{ database.dbpassword|truncatechars:10 }}</td>
-                    <td>{{ database.dbhost }}</td>
-                    <td>
-                    {% if database.status %}
-                        <button type="button" class="btn btn-success btn-xs" onclick="change_status({{ database.id }},0)">已启用</button>
-                    {% else %}
-                        <button type="button" class="btn btn-danger btn-xs" onclick="change_status({{ database.id }},1)">已停用</button>
-                    {% endif %}
-                    </td>
+                    <td>{{ database.dbaddr }}</td>
                     <td>{{ database.comment }}</td>
                     <td>
-                        <button type="button" class="btn btn-success btn-xs" onclick="change_password({{ database.id }},'{{ database.name }}',1)">改密</button>
                         <button type="button" class="btn btn-danger btn-xs" onclick="delete_database({{ database.id }},'{{ database.name }}')">删除</button>
                     </td>
                 </tr>
@@ -225,12 +262,19 @@
 
 
 <script>
+
 $('#page_nav').text('数据库')
 
+/*
+功能搜索
+*/
 function database_filter() {
     window.location = '/database/?filter=' + $('#input_database_filter').val()
 }
 
+/*
+功能：点击显示和隐藏数据库信息
+*/
 $('#divdb').click(function(){//点击a标签  
     if ($('#divdbinfo').css("display")=="none"){//如果当前隐藏  
         $('#divdbinfo').show(100);//那么就显示div  
@@ -239,6 +283,9 @@ $('#divdb').click(function(){//点击a标签  
     }  
 })
 
+/*
+功能：点击显示和隐藏用户信息
+*/
 $('#divuser').click(function(){//点击a标签  
     if ($('#divuserinfo').css("display")=="none"){//如果当前隐藏  
         $('#divuserinfo').show(100);//那么就显示div  
@@ -247,6 +294,9 @@ $('#divuser').click(function(){//点击a标签  
     }  
 })
 
+/*
+功能：选择ip时显示填写ip信息栏
+*/
 function showinfo(values){
     if (values==''){
        $("#ip").css("display","none");
@@ -262,6 +312,106 @@ function showinfo(values){
        }
 }
 
+/*
+功能：显示创建用户的用户输入界面
+*/
+function create_user(create) {
+    if (create == 1) {
+        $('#create_user').modal('show')
+    }
+}
+
+/*
+功能：获取用户输入数据，并通过ajax方法将数据传入后端
+*/
+function save_user() {
+    var values = $('#select_dbhost').val();
+    if (values == 'IP') {
+        var post = {
+            'name': $('#input_dbname').serializeObject()['dbname'],
+            'user': $('#input_dbuser').serializeObject()['dbuser'],
+            'password': $('#input_dbpassword').serializeObject()['dbpassword'],
+            'host': $('#input_dbhost').serializeObject()['dbhost'],
+            'comment': $('#input_dbcomment').serializeObject()['dbcomment']
+        }
+    } else {
+        var post = {
+            'name': $('#input_dbname').serializeObject()['dbname'],
+            'user': $('#input_dbuser').serializeObject()['dbuser'],
+            'password': $('#input_dbpassword').serializeObject()['dbpassword'],
+            'host': $('#select_dbhost').serializeObject()['dbhost'],
+            'comment': $('#input_dbcomment').serializeObject()['dbcomment']
+        }
+    }
+    console.log(post)
+    jQuery.ajax({
+        type: 'post',
+        url: '/database/create',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        data: JSON.stringify(post),
+        dataType: 'json',
+        success: function(p) {
+            if (p.flag == "Success") {
+                alert(p.content)
+                top.location = '/database'
+            } else {
+                alert('保存错误！其他错误：' + p.content)
+            }
+        },
+        error: function(e) {
+            alert('请求失败!')
+        }
+    })
+}
+
+/*
+功能：显示创建数据库用户输入界面
+*/
+function create_database(create) {
+    if (create == 1) {
+        $('#create_database').modal('show')
+    }
+}
+
+function save_database() {
+    var values = $('#select_dbhost').val();
+    if (values == 'IP') {
+        var post = {
+            'name': $('#input_dbname').serializeObject()['dbname'],
+            'user': $('#input_dbuser').serializeObject()['dbuser'],
+            'password': $('#input_dbpassword').serializeObject()['dbpassword'],
+            'host': $('#input_dbhost').serializeObject()['dbhost'],
+            'comment': $('#input_dbcomment').serializeObject()['dbcomment']
+        }
+    } else {
+        var post = {
+            'name': $('#input_dbname').serializeObject()['dbname'],
+            'user': $('#input_dbuser').serializeObject()['dbuser'],
+            'password': $('#input_dbpassword').serializeObject()['dbpassword'],
+            'host': $('#select_dbhost').serializeObject()['dbhost'],
+            'comment': $('#input_dbcomment').serializeObject()['dbcomment']
+        }
+    }
+    console.log(post)
+    jQuery.ajax({
+        type: 'post',
+        url: '/database/create',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        data: JSON.stringify(post),
+        dataType: 'json',
+        success: function(p) {
+            if (p.flag == "Success") {
+                alert(p.content)
+                top.location = '/database'
+            } else {
+                alert('保存错误！其他错误：' + p.content)
+            }
+        },
+        error: function(e) {
+            alert('请求失败!')
+        }
+    })
+}
 function delete_database(id, name) {
     if (confirm("确认删除数据库账号[" + name + "]？")) {
         var post = {
@@ -334,52 +484,6 @@ function sync_database(sync_status) {
             }
         })
     }
-}
-
-function create_database(create) {
-    if (create == 1) {
-        $('#create_database').modal('show')
-    }
-}
-
-function save_database() {
-    var values = $('#select_dbhost').val();
-    if (values == 'IP') {
-        var post = {
-            'name': $('#input_dbname').serializeObject()['dbname'],
-            'user': $('#input_dbuser').serializeObject()['dbuser'],
-            'password': $('#input_dbpassword').serializeObject()['dbpassword'],
-            'host': $('#input_dbhost').serializeObject()['dbhost'],
-            'comment': $('#input_dbcomment').serializeObject()['dbcomment']
-        }
-    } else {
-        var post = {
-            'name': $('#input_dbname').serializeObject()['dbname'],
-            'user': $('#input_dbuser').serializeObject()['dbuser'],
-            'password': $('#input_dbpassword').serializeObject()['dbpassword'],
-            'host': $('#select_dbhost').serializeObject()['dbhost'],
-            'comment': $('#input_dbcomment').serializeObject()['dbcomment']
-        }
-    }
-    console.log(post)
-    jQuery.ajax({
-        type: 'post',
-        url: '/database/create',
-        headers: {'X-CSRFToken': '{{ csrf_token }}'},
-        data: JSON.stringify(post),
-        dataType: 'json',
-        success: function(p) {
-            if (p.flag == "Success") {
-                alert(p.content)
-                top.location = '/database'
-            } else {
-                alert('保存错误！其他错误：' + p.content)
-            }
-        },
-        error: function(e) {
-            alert('请求失败!')
-        }
-    })
 }
 
 function change_password(id,name,status) {
