@@ -18,7 +18,7 @@ def index(request):
     users = User.objects.all()
     databases = Database.objects.all()
     content = {
-        'users': users
+        'users': users,
         'databases' : databases
     }
     return render(request, "database.html", content)
@@ -39,12 +39,13 @@ def CreateUser(request):
     
     '''定义执行语句'''
     create_user_sql = "CREATE USER %s@%s IDENTIFIED BY '%s';" % (user,host,password) #创建用户语句
-    
+    flush_sql = "flush privileges;"
+
     '''做判断逻辑，判断用户输入数据不存在sqlite中'''
-    if not User.objects.filter(dbuser = post['user'],dbhost = post['host']).exists():
+    if not User.objects.filter(dbuser = user,dbhost = host).exists():
         try:
             '''将用户输入的数据存入sqlite，调用MysqlManager方法执行创建用户动作，反馈给用户成功信息'''
-            dbuser_create = User(dbuser = post['user'], dbhost = post['host'], dbpassword = post['password'], comment = post['comment'])
+            dbuser_create = User(dbuser = user, dbhost = host, dbpassword = password, comment = comment)
             dbManager = MysqlManager("mysql", 'root', eval(OPTIONS['dbrootpwd']))
             dbManager.execute(create_user_sql)
             result = user + '用户创建成功！'
@@ -73,12 +74,12 @@ def CreateDatabase(request):
     create_database_sql = "CREATE DATABASE IF NOT EXISTS %s CHARACTER SET utf8mb4;" % (dbname) #创建库语句
 
     '''做判断逻辑，判断用户输入数据不存在sqlite中'''
-    if not Database.objects.filter(dbname = post['dbname']).exists():
+    if not Database.objects.filter(dbname = dbname).exists():
         try:
             '''将用户输入的数据存入sqlite，调用MysqlManager方法执行创建数据库动作，反馈给用户成功信息'''
-            database_create = Database(dbname = post['dbname'], dbaddr = post['dbaddr'], comment = post['comment'])
-            dbManager = MysqlManager("mysql", 'root', eval(OPTIONS['dbrootpwd']))
-            dbManager.execute(create_database_sql)
+            database_create = Database(dbname = dbname, dbaddr = dbaddr, comment = comment)
+            #dbManager = MysqlManager("mysql", 'root', eval(OPTIONS['dbrootpwd']))
+            #dbManager.execute(create_database_sql)
             result = dbname + '创建成功！'
             content = { 'flag': 'Success', 'content': result}
             database_create.save()
@@ -98,19 +99,22 @@ def GrantUser(request):
     '''使用json.loads方法获取post数据'''
     post = json.loads(request.body)
     dbname = post['dbname']
-    dbuser = post['user']
-    dbhost = post['host']
-    dbauth = post['auth']
+    user = post['user']
+    host = post['host']
+    auth = post['auth']
     comment = post['comment']
 
-    '''定义执行语句'''
-    grant_user_sql = "GRANT ALL PRIVILEGES ON %s.* TO %s@'%s'" % (dbname,dbuser,dbhost) #赋权语句
+    '''判断输入数据中是否存在所有权限，然后定义执行语句'''
+    if 'all' in auth:
+        grant_user_sql = "GRANT ALL PRIVILEGES ON %s.* TO %s@'%s'" % (dbname,user,host) #赋权语句
+    else:
+        grant_user_sql = "GRANT %s ON %s.* TO %s@'%s'" % (','.join(auth),dbname,user,host) #赋权语句 
 
-    '''做判断逻辑，判断数据库存在'''
-    if  Database.objects.filter(dbname = post['dbname']).exists():
-        if not Permission.objects.filter(dbuser = post['user'],dbhost = post['host']).exists():
+    #做判断逻辑，判断数据库存在和权限表不存在的情况
+    if  Database.objects.filter(dbname = dbname).exists():
+        if not Permission.objects.filter(dbuser = user,dbhost = host).exists():
             try:
-                dbgrant_create = Permission(dbname = post['dbname'], dbuser = post['user'], dbhost = post['host'], select_priv = post['auth'], insert_priv = post['auth'], update_priv = post['auth'], delete_priv = post['auth'], comment = post['comment'])
+                dbgrant_create = Permission(dbname = dbname, dbuser = user, dbhost = host, select_priv = select, insert_priv = insert, update_priv = update, delete_priv = delete, comment = comment)
                 dbManager = MysqlManager("mysql", 'root', eval(OPTIONS['dbrootpwd']))
                 dbManager.execute(grant_user_sql)
                 result = dbuser + '赋权成功！'
@@ -123,4 +127,6 @@ def GrantUser(request):
     else:
         content = {'flag': 'Error', 'content': '输入的库不存在！不能进行赋权'}
     return JsonResponse(content)
+
+    
 

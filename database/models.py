@@ -21,15 +21,9 @@ class Database(models.Model):
 
 '''权限对应表'''
 class Permission(models.Model):
-    YES = 'Y'
-    NO = 'N'
-    YES_OR_NO_CHOICES = ((YES,'Yes'),(NO,'No')) #定义字段选择
     addtime = models.DateTimeField(auto_now=True, auto_created=True)
     dbname = models.CharField(max_length=50)
     dbuser = models.CharField(max_length=50)
     dbhost = models.CharField(max_length=50)
-    select_priv = models.CharField(max_length=2,choices=YES_OR_NO_CHOICES,default=NO)
-    insert_priv = models.CharField(max_length=2,choices=YES_OR_NO_CHOICES,default=NO)
-    update_priv = models.CharField(max_length=2,choices=YES_OR_NO_CHOICES,default=NO)
-    delete_priv = models.CharField(max_length=2,choices=YES_OR_NO_CHOICES,default=NO)
+    permission = models.CharField(max_length=255,default='')
     comment = models.CharField(max_length=255, blank=True, null=True, default='')
