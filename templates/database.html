@@ -98,6 +98,73 @@
     </div>
 </div>
 
+<div class="modal fade" id="grant_second_user" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" style="width: 500px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="tab-content">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab_grant_second_user">
+                            <form class="form-horizontal" id="form_grant_second_user">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">* 用户名</label>
+                                    <div class="col-sm-6" id="div_grant_second_user">
+                                        <input type="text" class="form-control" name="grant_second_user" id="input_grant_second_user" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">* 访问主机</label>
+                                    <div class="col-sm-6" id="div_grant_second_host">
+                                        <input type="text" class="form-control" name="grant_second_host" id="input_grant_second_host" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">* 数据库</label>
+                                    <div class="col-sm-6" id="div_grant_second_dbname">
+                                        <input type="text" class="form-control" name="grant_second_dbname" id="input_grant_second_dbname" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">  已赋权限</label>
+                                    <div class="col-sm-6" id="div_grant_second_permission">
+                                        <input type="text" class="form-control" name="grant_second_permission" id="input_grant_second_permission" readonly="readonly">
+                                    </div>
+                                </div>                                
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">* 新增权限</label>
+                                    <div class="col-sm-6" id="div_grant_second_type">
+                                        <p><input type="checkbox"  name="grant_second_type" id="input_grant_second_all" value="all"/>all</p>
+                                        <p><input type="checkbox"  name="grant_second_type" id="input_grant_second_select" value="select"/>select</p>
+                                        <p><input type="checkbox" name="grant_second_type" id="input_grant_second_insert" value="insert"/>insert</p>
+                                        <p><input type="checkbox" name="grant_second_type" id="input_grant_second_update" value="update"/>update</p>
+                                        <p><input type="checkbox"  name="grant_second_type" id="input_grant_second_delete" value="delete"/>delete</p>
+                                        <p><input type="checkbox"  name="grant_second_type" id="input_grant_second_create" value="create"/>create</p>
+                                        <p><input type="checkbox"  name="grant_second_type" id="input_grant_second_drop" value="drop"/>drop</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">* 备注</label>
+                                    <div class="col-sm-6" id="div_grant_second_comment">
+                                        <input type="text" class="form-control" name="grant_second_comment" id="input_grant_second_comment" placeholder="详细备注">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
+                <button type="button" class="btn btn-primary" onclick="grant_second_user_save()">{% trans "Save" %}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="modal fade" id="create_database" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" style="width: 500px;">
         <div class="modal-content">
@@ -239,7 +306,7 @@
                     <td>{{ user.dbhost }}</td>
                     <td>{{ user.comment }}</td>
                     <td>
-                        <button type="button" class="btn btn-success btn-xs" onclick="grant_user({{ user.id }},'{{ user.dbuser }}','{{ user.dbhost }}',1)">赋权</button>
+                        <button type="button" class="btn btn-success btn-xs" onclick="grant_user({{ user.id }},'{{ user.dbuser }}','{{ user.dbhost }}',1)">首次赋权</button>
                         <button type="button" class="btn btn-success btn-xs" onclick="change_password({{ user.id }},'{{ user.dbuser }}',1)">改密</button>
                         <button type="button" class="btn btn-danger btn-xs" onclick="delete_user({{ database.id }},'{{ database.name }}')">删除</button>
                     </td>
@@ -280,6 +347,40 @@
     </div>
 </div>
 
+<div id="pageone">
+    <div id="divgrant" style="height:60px;">
+        <p>权限表信息</p>
+    </div>
+    <div id="divgrantinfo" class="box-body no-padding" style="display: none;">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>数据库名</th>
+                    <th>用户</th>
+                    <th>访问主机</th>
+                    <th>权限列表</th>
+                    <th>备注</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for permission in permissions %}
+                <tr>
+                    <td>{{ permission.dbname }}</td>
+                    <td>{{ permission.dbuser }}</td>
+                    <td>{{ permission.dbhost }}</td>
+                    <td>{{ permission.permission }}</td>
+                    <td>{{ permission.comment }}</td>
+                    <td>
+                        <button type="button" class="btn btn-success btn-xs" onclick="grant_second_user('{{ permission.dbname }}','{{ permission.dbuser }}','{{ permission.dbhost }}','{{ permission.permission }}',1)">增加权限</button>
+                        <button type="button" class="btn btn-danger btn-xs" onclick="delete_database({{ database.id }},'{{ database.name }}')">删除权限</button>                        
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 <!-- /.box-body -->
 <div class="box-footer clearfix">
     <ul class="pagination pagination-sm no-margin pull-right">
@@ -331,6 +432,17 @@ $('#divuser').click(function(){//点击a标签  
         $('#divuserinfo').show(100);//那么就显示div  
     }else{ 
         $('#divuserinfo').hide(100);//就隐藏div  
+    }  
+})
+
+/*
+功能：点击显示和隐藏权限信息
+*/
+$('#divgrant').click(function(){//点击a标签  
+    if ($('#divgrantinfo').css("display")=="none"){//如果当前隐藏  
+        $('#divgrantinfo').show(100);//那么就显示div  
+    }else{ 
+        $('#divgrantinfo').hide(100);//就隐藏div  
     }  
 })
 
@@ -442,7 +554,7 @@ function save_database() {
 }
 
 /*
-功能：获取相应的前端值，将值展示
+功能：获取第一次赋权的前端值，将值展示
 */
 function grant_user(id,name,host,status) {
     if (status == 1) {
@@ -453,6 +565,9 @@ function grant_user(id,name,host,status) {
     }
 }
 
+/*
+功能：获取用户第一次给数据库用户赋权所输入的数据，将数据传入后端
+*/
 function grant_user_save() {
     var values = [];
     $('input[name="grant_type"]:checked').each(function(){
@@ -469,7 +584,6 @@ function grant_user_save() {
         'auth': values,
         'comment': $('#input_grant_comment').serializeObject()['grant_comment']
     }
-    console.log(post)
     jQuery.ajax({
         type: 'post',
         url: '/database/grantuser',
@@ -478,8 +592,63 @@ function grant_user_save() {
         dataType: 'json',
         success: function(p) {
             if (p.flag == "Success") {
-                alert(p.content)
-                //top.location = '/database'
+                //alert(p.content)
+                top.location = '/database'
+            } else {
+                alert('保存错误！其他错误：' + p.content)
+            }
+        },
+        error: function(e) {
+            alert('请求失败!')
+        }
+    })
+}
+
+
+/*
+功能：获取第二次赋权的前端值，将值展示
+*/
+function grant_second_user(name,user,host,permission,status) {
+    if (status == 1) {
+        $('#input_grant_second_dbname').val(name)
+        $('#input_grant_second_user').val(user)
+        $('#input_grant_second_host').val(host)
+        $('#input_grant_second_permission').val(permission)
+        $('#grant_second_user').modal('show')
+    }
+}
+
+/*
+功能：获取用户第二次给数据库用户赋权所输入的数据，将数据传入后端
+*/
+function grant_second_user_save() {
+    var value1 = [];
+    var value2 = $('#input_grant_second_permission').serializeObject()['grant_second_permission'].split(',');
+
+    $('input[name="grant_second_type"]:checked').each(function(){
+        value1.push($(this).val());       
+    });
+    if (value1.length==0){
+        alert('请选择权限！');
+    }
+    var values = value1.concat(value2);
+    var post = {
+        'user': $('#input_grant_second_user').serializeObject()['grant_second_user'],
+        'host': $('#input_grant_second_host').serializeObject()['grant_second_host'],
+        'dbname': $('#input_grant_second_dbname').serializeObject()['grant_second_dbname'],
+        'auth': values,
+        'comment': $('#input_grant_second_comment').serializeObject()['grant_second_comment']
+    }
+    jQuery.ajax({
+        type: 'post',
+        url: '/database/grantuser',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        data: JSON.stringify(post),
+        dataType: 'json',
+        success: function(p) {
+            if (p.flag == "Success") {
+                //alert(p.content)
+                top.location = '/database'
             } else {
                 alert('保存错误！其他错误：' + p.content)
             }
