@@ -1,3 +1,4 @@
 *.pyc
 *.db
 *_initial.py
+*.log
