@@ -38,6 +38,133 @@
     </div>
 </div>
 
+<div class="modal fade" id="grant_user" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" style="width: 360px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="tab-content">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab_grant_user">
+                            <form class="form-horizontal" id="form_grant_user">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">* 用户名</label>
+                                    <div class="col-sm-6" id="div_grant_user">
+                                        <input type="text" class="form-control" name="grant_user" id="input_grant_user" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">* 访问主机</label>
+                                    <div class="col-sm-6" id="div_grant_host">
+                                        <input type="text" class="form-control" name="grant_host" id="input_grant_host" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">* 数据库</label>
+                                    <div class="col-sm-6" id="div_grant_dbname">
+                                        <input type="text" class="form-control" name="grant_dbname" id="input_grant_dbname" placeholder="数据库名">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">* 权限</label>
+                                    <div class="col-sm-6" id="div_grant_type">
+                                        <p><input type="checkbox"  name="grant_type" id="input_grant_all" value="all"/>all</p>
+                                        <p><input type="checkbox"  name="grant_type" id="input_grant_select" value="select"/>select</p>
+                                        <p><input type="checkbox" name="grant_type" id="input_grant_insert" value="insert"/>insert</p>
+                                        <p><input type="checkbox" name="grant_type" id="input_grant_update" value="update"/>update</p>
+                                        <p><input type="checkbox"  name="grant_type" id="input_grant_delete" value="delete"/>delete</p>
+                                        <p><input type="checkbox"  name="grant_type" id="input_grant_create" value="create"/>create</p>
+                                        <p><input type="checkbox"  name="grant_type" id="input_grant_drop" value="drop"/>drop</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">* 备注</label>
+                                    <div class="col-sm-6" id="div_grant_comment">
+                                        <input type="text" class="form-control" name="grant_comment" id="input_grant_comment" placeholder="详细备注">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
+                <button type="button" class="btn btn-primary" onclick="grant_user_save()">{% trans "Save" %}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="grant_second_user" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" style="width: 500px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="tab-content">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab_grant_second_user">
+                            <form class="form-horizontal" id="form_grant_second_user">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">* 用户名</label>
+                                    <div class="col-sm-6" id="div_grant_second_user">
+                                        <input type="text" class="form-control" name="grant_second_user" id="input_grant_second_user" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">* 访问主机</label>
+                                    <div class="col-sm-6" id="div_grant_second_host">
+                                        <input type="text" class="form-control" name="grant_second_host" id="input_grant_second_host" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">* 数据库</label>
+                                    <div class="col-sm-6" id="div_grant_second_dbname">
+                                        <input type="text" class="form-control" name="grant_second_dbname" id="input_grant_second_dbname" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">  已赋权限</label>
+                                    <div class="col-sm-6" id="div_grant_second_permission">
+                                        <input type="text" class="form-control" name="grant_second_permission" id="input_grant_second_permission" readonly="readonly">
+                                    </div>
+                                </div>                                
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">* 新增权限</label>
+                                    <div class="col-sm-6" id="div_grant_second_type">
+                                        <p><input type="checkbox"  name="grant_second_type" id="input_grant_second_all" value="all"/>all</p>
+                                        <p><input type="checkbox"  name="grant_second_type" id="input_grant_second_select" value="select"/>select</p>
+                                        <p><input type="checkbox" name="grant_second_type" id="input_grant_second_insert" value="insert"/>insert</p>
+                                        <p><input type="checkbox" name="grant_second_type" id="input_grant_second_update" value="update"/>update</p>
+                                        <p><input type="checkbox"  name="grant_second_type" id="input_grant_second_delete" value="delete"/>delete</p>
+                                        <p><input type="checkbox"  name="grant_second_type" id="input_grant_second_create" value="create"/>create</p>
+                                        <p><input type="checkbox"  name="grant_second_type" id="input_grant_second_drop" value="drop"/>drop</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">* 备注</label>
+                                    <div class="col-sm-6" id="div_grant_second_comment">
+                                        <input type="text" class="form-control" name="grant_second_comment" id="input_grant_second_comment" placeholder="详细备注">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
+                <button type="button" class="btn btn-primary" onclick="grant_second_user_save()">{% trans "Save" %}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="modal fade" id="create_database" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" style="width: 500px;">
         <div class="modal-content">
@@ -45,7 +172,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <div class="nav-tabs-custom">
+                <div class="nav-tabs-custom"> 
                     <div class="tab-content">
                         <div class="tab-pane active" id="tab_create_database">
                             <form class="form-horizontal" id="form_create_database">
@@ -56,31 +183,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label">* 用户名</label>
-                                    <div class="col-sm-7" id="div_dbuser">
-                                        <input type="text" class="form-control" name="dbuser" id="input_dbuser" placeholder="用户名">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">* 数据库密码</label>
-                                    <div class="col-sm-7" id="div_password">
-                                        <input type="password" class="form-control" name="dbpassword" id="input_dbpassword" placeholder="数据库密码">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">* 访问权限</label>
-                                    <div class="col-sm-7" >
-                                      <select class="form-control" name="dbhost" id="select_dbhost" onchange="showinfo(this[selectedIndex].value)">
-                                        <option value="localhost" selected>localhost</option>
-                                        <option value="%">%</option>
-                                        <option value="IP">指定IP</option>
-                                      </select>
-                                    </div>
-                                </div>
-                                <div class="form-group" id="ip" style="display:none" >
-                                    <label class="col-sm-3 control-label">* IP</label>
-                                    <div class="col-sm-7" >
-                                        <input type="text" class="form-control" name="dbhost" id="input_dbhost" placeholder="指定IP">
+                                    <label class="col-sm-3 control-label">* 服务器地址</label>
+                                    <div class="col-sm-7" id="div_dbaddr">
+                                        <input type="text" class="form-control" name="dbaddr" id="input_dbaddr" placeholder="localhost" value="localhost" readonly="readonly">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -102,11 +207,70 @@
     </div>
 </div>
 
+<div class="modal fade" id="create_user" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" style="width: 500px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="nav-tabs-custom">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab_create_user">
+                            <form class="form-horizontal" id="form_create_user">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">* 用户名</label>
+                                    <div class="col-sm-7" id="div_user">
+                                        <input type="text" class="form-control" name="user" id="input_user" placeholder="用户名">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">* 用户密码</label>
+                                    <div class="col-sm-7" id="div_password">
+                                        <input type="password" class="form-control" name="password" id="input_password" placeholder="用户密码">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">* 访问权限</label>
+                                    <div class="col-sm-7" >
+                                      <select class="form-control" name="host" id="select_host" onchange="showinfo(this[selectedIndex].value)">
+                                        <option value="localhost" selected>localhost</option>
+                                        <option value="%">%</option>
+                                        <option value="IP">指定IP</option>
+                                      </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="ip" style="display:none" >
+                                    <label class="col-sm-3 control-label">* IP</label>
+                                    <div class="col-sm-7" >
+                                        <input type="text" class="form-control" name="host" id="input_host" placeholder="指定IP">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">* 备注</label>
+                                    <div class="col-sm-7" id="div_comment">
+                                        <input type="text" class="form-control" name="comment" id="input_comment" placeholder="详细备注">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="save_user()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-md-12">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <button type="button" class="btn btn-primary pull-left" onclick="create_database(1)">创建数据库</button>
+                <button type="button" class="btn btn-primary pull-left" onclick="create_user(1)">创建用户</button>
+                <button type="button" class="btn btn-primary pull-left" onclick="create_database(1)">创建数据库</button>               
                 <button type="button" class="btn btn-primary pull-left" onclick="sync_database(1)">同步数据库账号</button>
                 <div class="input-group pull-right" style="width: 250px;">
                     <input type="text" name="database_filter" id="input_database_filter" class="form-control pull-right" placeholder="搜索" onkeydown='if(event.keyCode==13){database_filter()}'>
@@ -115,69 +279,176 @@
                     </div>
                 </div>
             </div>
-            <!-- /.box-header -->
-            <div class="box-body no-padding">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>数据库名</th>
-                            <th>用户名</th>
-                            <th>密码</th>
-                            <th>根目录</th>
-                            <th>状态</th>
-                            <th>备注</th>
-                            <th>操作</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for database in databases %}
-                        <tr>
-                            <td>{{ database.dbname }}</td>
-                            <td>{{ database.dbuser }}</td>
-                            <td>{{ database.dbpassword|truncatechars:10 }}</td>
-                            <td>{{ database.dbhost }}</td>
-                            <td>
-                            {% if database.status %}
-                                <button type="button" class="btn btn-success btn-xs" onclick="change_status({{ database.id }},0)">已启用</button>
-                            {% else %}
-                                <button type="button" class="btn btn-danger btn-xs" onclick="change_status({{ database.id }},1)">已停用</button>
-                            {% endif %}
-                            </td>
-                            <td>{{ database.comment }}</td>
-                            <td><button type="button" class="btn btn-success btn-xs" onclick="change_password({{ database.id }},'{{ database.name }}',1)">改密</button>
-                            <button type="button" class="btn btn-danger btn-xs" onclick="delete_database({{ database.id }},'{{ database.name }}')">删除</button></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer clearfix">
-                <ul class="pagination pagination-sm no-margin pull-right">
-                    {% if content.has_previous %}
-                    <li><a href="?page={{ content.previous_page_number }}&filter={{ filter }}" class="prev">{{ previous_link_decorator|safe }}上一页</a></li>
-                    {% else %}
-                    <li class="paginate_button previous disabled"><span class="disabled prev">{{ previous_link_decorator|safe }}上一页</span></li>
-                    {% endif %} {% if content.has_next %}
-                    <li><a href="?page={{ content.next_page_number }}&filter={{ filter }}" class="next">下一页{{ next_link_decorator|safe }}</a></li>
-                    {% else %}
-                    <li class="paginate_button next disabled"><span class="disabled next">下一页{{ next_link_decorator|safe }}</span></li>
-                    {% endif %}
-                    <li class="paginate_button previous disabled">
-                        <span>第 {{ content.number }} 页 - 共 {{ content.paginator.num_pages }} 页</span>
-                    </li>
-                </ul>
-            </div>
         </div>
     </div>
 </div>
+<!-- /.box-header -->
+<div id="pageone">
+    <div id="divuser" style="background-color:#3c8dbc; height:60px;">
+        <p>用户信息</p>     
+    </div> 
+    <div id="divuserinfo" class="box-body no-padding" style="display: none;">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>用户名</th>
+                    <th>密码</th>
+                    <th>访问主机</th>
+                    <th>备注</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.dbuser }}</td>
+                    <td>{{ user.dbpassword|truncatechars:10 }}</td>
+                    <td>{{ user.dbhost }}</td>
+                    <td>{{ user.comment }}</td>
+                    <td>
+                        <button type="button" class="btn btn-success btn-xs" onclick="grant_user({{ user.id }},'{{ user.dbuser }}','{{ user.dbhost }}',1)">首次赋权</button>
+                        <button type="button" class="btn btn-success btn-xs" onclick="change_password({{ user.id }},'{{ user.dbuser }}',1)">改密</button>
+                        <button type="button" class="btn btn-danger btn-xs" onclick="delete_user({{ database.id }},'{{ database.name }}')">删除</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div> 
+
+<div id="pageone">
+    <div id="divdb" style="height:60px;">
+        <p>数据库信息</p>
+    </div>
+    <div id="divdbinfo" class="box-body no-padding" style="display: none;">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>数据库名</th>
+                    <th>服务地址</th>
+                    <th>备注</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for database in databases %}
+                <tr>
+                    <td>{{ database.dbname }}</td>
+                    <td>{{ database.dbaddr }}</td>
+                    <td>{{ database.comment }}</td>
+                    <td>
+                        <button type="button" class="btn btn-danger btn-xs" onclick="delete_database({{ database.id }},'{{ database.name }}')">删除</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="pageone">
+    <div id="divgrant" style="height:60px;">
+        <p>权限表信息</p>
+    </div>
+    <div id="divgrantinfo" class="box-body no-padding" style="display: none;">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>数据库名</th>
+                    <th>用户</th>
+                    <th>访问主机</th>
+                    <th>权限列表</th>
+                    <th>备注</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for permission in permissions %}
+                <tr>
+                    <td>{{ permission.dbname }}</td>
+                    <td>{{ permission.dbuser }}</td>
+                    <td>{{ permission.dbhost }}</td>
+                    <td>{{ permission.permission }}</td>
+                    <td>{{ permission.comment }}</td>
+                    <td>
+                        <button type="button" class="btn btn-success btn-xs" onclick="grant_second_user('{{ permission.dbname }}','{{ permission.dbuser }}','{{ permission.dbhost }}','{{ permission.permission }}',1)">增加权限</button>
+                        <button type="button" class="btn btn-danger btn-xs" onclick="delete_database({{ database.id }},'{{ database.name }}')">删除权限</button>                        
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- /.box-body -->
+<div class="box-footer clearfix">
+    <ul class="pagination pagination-sm no-margin pull-right">
+        {% if content.has_previous %}
+        <li><a href="?page={{ content.previous_page_number }}&filter={{ filter }}" class="prev">{{ previous_link_decorator|safe }}上一页</a></li>
+        {% else %}
+        <li class="paginate_button previous disabled"><span class="disabled prev">{{ previous_link_decorator|safe }}上一页</span></li>
+        {% endif %} {% if content.has_next %}
+        <li><a href="?page={{ content.next_page_number }}&filter={{ filter }}" class="next">下一页{{ next_link_decorator|safe }}</a></li>
+        {% else %}
+        <li class="paginate_button next disabled"><span class="disabled next">下一页{{ next_link_decorator|safe }}</span></li>
+        {% endif %}
+        <li class="paginate_button previous disabled">
+            <span>第 {{ content.number }} 页 - 共 {{ content.paginator.num_pages }} 页</span>
+        </li>
+    </ul>
+</div>
+
+
 <script>
-$('#page_nav').text('数据库')
+
+// $('#page_nav').text('数据库')
+
+
+/*
+功能:搜索
+*/
 
 function database_filter() {
     window.location = '/database/?filter=' + $('#input_database_filter').val()
 }
 
+/*
+功能：点击显示和隐藏数据库信息
+*/
+$('#divdb').click(function(){//点击a标签  
+    if ($('#divdbinfo').css("display")=="none"){//如果当前隐藏  
+        $('#divdbinfo').show(100);//那么就显示div  
+    }else{ 
+        $('#divdbinfo').hide(100);//就隐藏div  
+    }  
+})
+
+/*
+功能：点击显示和隐藏用户信息
+*/
+$('#divuser').click(function(){//点击a标签  
+    if ($('#divuserinfo').css("display")=="none"){//如果当前隐藏  
+        $('#divuserinfo').show(100);//那么就显示div  
+    }else{ 
+        $('#divuserinfo').hide(100);//就隐藏div  
+    }  
+})
+
+/*
+功能：点击显示和隐藏权限信息
+*/
+$('#divgrant').click(function(){//点击a标签  
+    if ($('#divgrantinfo').css("display")=="none"){//如果当前隐藏  
+        $('#divgrantinfo').show(100);//那么就显示div  
+    }else{ 
+        $('#divgrantinfo').hide(100);//就隐藏div  
+    }  
+})
+
+/*
+功能：选择ip时显示填写ip信息栏
+*/
 function showinfo(values){
     if (values==''){
        $("#ip").css("display","none");
@@ -191,6 +462,201 @@ function showinfo(values){
     if (values=='IP'){
        $("#ip").css("display","block");
        }
+}
+
+/*
+功能：显示创建用户的用户输入界面
+*/
+function create_user(create) {
+    if (create == 1) {
+        $('#create_user').modal('show')
+    }
+}
+
+/*
+功能：获取用户输入用户信息数据，并通过ajax方法将数据传入后端
+*/
+function save_user() {
+    var values = $('#select_host').val();
+    if (values == 'IP') {
+        var post = {
+            'user': $('#input_user').serializeObject()['user'],
+            'password': $('#input_password').serializeObject()['password'],
+            'host': $('#input_host').serializeObject()['host'],
+            'comment': $('#input_comment').serializeObject()['comment']
+        }
+    } else {
+        var post = {
+            'user': $('#input_user').serializeObject()['user'],
+            'password': $('#input_password').serializeObject()['password'],
+            'host': $('#select_host').serializeObject()['host'],
+            'comment': $('#input_comment').serializeObject()['comment']
+        }
+    }
+    jQuery.ajax({
+        type: 'post',
+        url: '/database/createuser',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        data: JSON.stringify(post),
+        dataType: 'json',
+        success: function(p) {
+            if (p.flag == "Success") {
+                alert(p.content)
+                top.location = '/database'
+            } else {
+                alert('保存错误！其他错误：' + p.content)
+            }
+        },
+        error: function(e) {
+            alert('请求失败!')
+        }
+    })
+}
+
+/*
+功能：显示创建数据库用户输入界面
+*/
+function create_database(create) {
+    if (create == 1) {
+        $('#create_database').modal('show')
+    }
+}
+
+/*
+功能：获取用户输入数据库信息数据，并通过ajax方法将数据传入后端
+*/
+
+function save_database() {
+    var post = {
+        'dbname': $('#input_dbname').serializeObject()['dbname'],
+        'dbaddr': $('#input_dbaddr').serializeObject()['dbaddr'],
+        'comment': $('#input_dbcomment').serializeObject()['dbcomment']
+    }
+    console.log(post)
+    jQuery.ajax({
+        type: 'post',
+        url: '/database/createdatabase',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        data: JSON.stringify(post),
+        dataType: 'json',
+        success: function(p) {
+            if (p.flag == "Success") {
+                alert(p.content)
+                top.location = '/database'
+            } else {
+                alert('保存错误！其他错误：' + p.content)
+            }
+        },
+        error: function(e) {
+            alert('请求失败!')
+        }
+    })
+}
+
+/*
+功能：获取第一次赋权的前端值，将值展示
+*/
+function grant_user(id,name,host,status) {
+    if (status == 1) {
+        window.id = id
+        $('#input_grant_user').val(name)
+        $('#input_grant_host').val(host)
+        $('#grant_user').modal('show')
+    }
+}
+
+/*
+功能：获取用户第一次给数据库用户赋权所输入的数据，将数据传入后端
+*/
+function grant_user_save() {
+    var values = [];
+    $('input[name="grant_type"]:checked').each(function(){
+        values.push($(this).val());       
+    });
+    if (values.length==0){
+        alert('请选择权限！');
+    }     
+    var post = {
+        'id': id,
+        'user': $('#input_grant_user').serializeObject()['grant_user'],
+        'host': $('#input_grant_host').serializeObject()['grant_host'],
+        'dbname': $('#input_grant_dbname').serializeObject()['grant_dbname'],
+        'auth': values,
+        'comment': $('#input_grant_comment').serializeObject()['grant_comment']
+    }
+    jQuery.ajax({
+        type: 'post',
+        url: '/database/grantuser',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        data: JSON.stringify(post),
+        dataType: 'json',
+        success: function(p) {
+            if (p.flag == "Success") {
+                //alert(p.content)
+                top.location = '/database'
+            } else {
+                alert('保存错误！其他错误：' + p.content)
+            }
+        },
+        error: function(e) {
+            alert('请求失败!')
+        }
+    })
+}
+
+
+/*
+功能：获取第二次赋权的前端值，将值展示
+*/
+function grant_second_user(name,user,host,permission,status) {
+    if (status == 1) {
+        $('#input_grant_second_dbname').val(name)
+        $('#input_grant_second_user').val(user)
+        $('#input_grant_second_host').val(host)
+        $('#input_grant_second_permission').val(permission)
+        $('#grant_second_user').modal('show')
+    }
+}
+
+/*
+功能：获取用户第二次给数据库用户赋权所输入的数据，将数据传入后端
+*/
+function grant_second_user_save() {
+    var value1 = [];
+    var value2 = $('#input_grant_second_permission').serializeObject()['grant_second_permission'].split(',');
+
+    $('input[name="grant_second_type"]:checked').each(function(){
+        value1.push($(this).val());       
+    });
+    if (value1.length==0){
+        alert('请选择权限！');
+    }
+    var values = value1.concat(value2);
+    var post = {
+        'user': $('#input_grant_second_user').serializeObject()['grant_second_user'],
+        'host': $('#input_grant_second_host').serializeObject()['grant_second_host'],
+        'dbname': $('#input_grant_second_dbname').serializeObject()['grant_second_dbname'],
+        'auth': values,
+        'comment': $('#input_grant_second_comment').serializeObject()['grant_second_comment']
+    }
+    jQuery.ajax({
+        type: 'post',
+        url: '/database/grantuser',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        data: JSON.stringify(post),
+        dataType: 'json',
+        success: function(p) {
+            if (p.flag == "Success") {
+                //alert(p.content)
+                top.location = '/database'
+            } else {
+                alert('保存错误！其他错误：' + p.content)
+            }
+        },
+        error: function(e) {
+            alert('请求失败!')
+        }
+    })
 }
 
 function delete_database(id, name) {
@@ -265,52 +731,6 @@ function sync_database(sync_status) {
             }
         })
     }
-}
-
-function create_database(create) {
-    if (create == 1) {
-        $('#create_database').modal('show')
-    }
-}
-
-function save_database() {
-    var values = $('#select_dbhost').val();
-    if (values == 'IP') {
-        var post = {
-            'name': $('#input_dbname').serializeObject()['dbname'],
-            'user': $('#input_dbuser').serializeObject()['dbuser'],
-            'password': $('#input_dbpassword').serializeObject()['dbpassword'],
-            'host': $('#input_dbhost').serializeObject()['dbhost'],
-            'comment': $('#input_dbcomment').serializeObject()['dbcomment']
-        }
-    } else {
-        var post = {
-            'name': $('#input_dbname').serializeObject()['dbname'],
-            'user': $('#input_dbuser').serializeObject()['dbuser'],
-            'password': $('#input_dbpassword').serializeObject()['dbpassword'],
-            'host': $('#select_dbhost').serializeObject()['dbhost'],
-            'comment': $('#input_dbcomment').serializeObject()['dbcomment']
-        }
-    }
-    console.log(post)
-    jQuery.ajax({
-        type: 'post',
-        url: '/database/create',
-        headers: {'X-CSRFToken': '{{ csrf_token }}'},
-        data: JSON.stringify(post),
-        dataType: 'json',
-        success: function(p) {
-            if (p.flag == "Success") {
-                alert(p.content)
-                top.location = '/database'
-            } else {
-                alert('保存错误！其他错误：' + p.content)
-            }
-        },
-        error: function(e) {
-            alert('请求失败!')
-        }
-    })
 }
 
 function change_password(id,name,status) {
