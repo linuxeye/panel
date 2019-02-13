@@ -58,12 +58,12 @@ def update_profile(request):
         newetitle = post['title']
         subkey = ['title']
         oldport = int(public.readfile('data/port.conf').strip())
-        pid = int(public.readfile('logs/runconfig.py.pid').strip())
+        pid = int(public.readfile('/var/run/panel.pid').strip())
         old_setting_dict = json.loads(public.readfile('data/setting.json'))
         if newetitle != old_setting_dict[subkey[0]]:
             setting_json = dict([(key, post[key]) for key in subkey])
             public.writefile('data/setting.json', json.dumps(setting_json))
-            print(pid)
+            #print(pid)
             os.kill(pid,signal.SIGHUP)
         if oldport != newport:
             public.writefile('data/port.conf', newport)
